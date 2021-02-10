@@ -1,13 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Poppins&display=swap');
+
 body {
+  background: #353b48;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.sidebar {
+  background: #2f3640;
+  height: 100vh;
+  width: 250px;
+  position: relative;
+  float: left;
+}
+
+.controller {
+  background: #2f3640;
+  width: 250px;
+  height: 340px;
+}
+
+.align_bottom{
+  position:absolute;
+  bottom:0;
+  left:0;
+}
+
+.albumart {
+  width: 250px;
+  height: 250px;
+}
+
+.songname {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Nunito Sans', sans-serif;
+  color: white;
+}
+
+.artistname {
+  font-size: 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  color: white;
+}
+
+.transparent {
+  background: transparent;
+}
+
+.menu-active {
+  color: #FFA600;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 8px;
+  cursor: default;
+}
+
+.menu-inactive {
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.page-container {
+  background: #353b48;
+}
+
+.page-headline {
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+}
+
+.table {
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+.seekbar {
+  width: 100%;
 }
