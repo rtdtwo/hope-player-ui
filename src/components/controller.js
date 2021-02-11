@@ -58,6 +58,7 @@ const Controller = (props) => {
     }
 
     useEffect(() => {
+        audio.currentTime = 0;
         pauseAudio();
         getStreamingUrl(song.id).then(response => {
             if (response.status === 200) {
@@ -94,6 +95,7 @@ const Controller = (props) => {
                 <Col>
                     <img src={prevIcon} width="14px" height="14px" alt=""
                         onClick={() => {
+                            audio.currentTime = 0;
                             pauseAudio();
                             goToPreviousSong();
                         }} />
@@ -113,6 +115,7 @@ const Controller = (props) => {
                 <Col className="text-center">
                     <img src={nextIcon} width="14px" height="14px" alt=""
                         onClick={() => {
+                            audio.currentTime = 0;
                             pauseAudio();
                             goToNextSong();
                         }} />
