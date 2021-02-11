@@ -1,7 +1,7 @@
 # hope-player-ui
 Hope Music Player UI. This frontend component is made using React.js.
 
-# Libraries Used:
+# Libraries Used
 - React
 - React-Bootstrap
 
