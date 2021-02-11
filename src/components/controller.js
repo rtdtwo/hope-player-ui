@@ -36,14 +36,14 @@ const Controller = (props) => {
         console.log('Call next song')
         const currentIndex = state.queue.indexOf(song);
         if (currentIndex < state.queue.length - 1) {
-            setState(state => ({...state, currentSong: state.queue[currentIndex + 1] }))
+            setState(state => ({ ...state, currentSong: state.queue[currentIndex + 1] }))
         }
     }
 
     const goToPreviousSong = () => {
         const currentIndex = state.queue.indexOf(song);
         if (currentIndex > 0) {
-            setState(state => ({...state, currentSong: state.queue[currentIndex - 1] }))
+            setState(state => ({ ...state, currentSong: state.queue[currentIndex - 1] }))
         }
     }
 
@@ -81,7 +81,7 @@ const Controller = (props) => {
     }
 
     return (
-        <div>
+        <div className="controller">
             <img className="albumart" src={albumArt} alt="" />
             <input
                 className="seekbar"
@@ -90,8 +90,8 @@ const Controller = (props) => {
                 max={audio.duration}
                 value={currentTime}
                 onChange={(event) => handleChange(event)} />
-            <Row>
-                <Col className="text-center">
+            <Row className="audio-controls text-center m-0">
+                <Col>
                     <img src={prevIcon} width="14px" height="14px" alt=""
                         onClick={() => {
                             pauseAudio();
@@ -118,8 +118,8 @@ const Controller = (props) => {
                         }} />
                 </Col>
             </Row>
-            <p className="songname ml-3 mt-3 mr-3 mb-1">{song.name}</p>
-            <p className="artistname ml-3 mb-3 mr-3">{song.artist}</p>
+            <p className="songname pl-3 pt-3 pr-3 pb-1 m-0">{song.name}</p>
+            <p className="artistname pl-3 pb-3 pr-3 m-0">{song.artist}</p>
         </div>
     )
 };

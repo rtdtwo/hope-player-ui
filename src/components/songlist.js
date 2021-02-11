@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import Table from 'react-bootstrap/Table';
 import noSongsIcon from '../assets/music_color.svg';
 
+import equalizerAnimation from '../assets/equalizer_anim.gif'
+
 import GlobalState from '../contexts/GlobalState';
 
 const SongList = (props) => {
@@ -11,11 +13,13 @@ const SongList = (props) => {
         const date = new Date(song.added * 1000)
         const formattedDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
 
+        const equalizerAnim = (state.currentSong === song) ? equalizerAnimation : ''
         return (
-            <tr key={song.id} onClick={() => setState(state => ({...state, currentSong: song }))}>
+            <tr key={song.id} onClick={() => setState(state => ({ ...state, currentSong: song }))}>
                 <td>{song.name}</td>
                 <td>{song.artist}</td>
                 <td>{formattedDate}</td>
+                <td><img src={equalizerAnim} height="24px"/></td>
             </tr>
         )
     });
@@ -28,6 +32,7 @@ const SongList = (props) => {
                         <th>Title</th>
                         <th>Artist</th>
                         <th>Added</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
