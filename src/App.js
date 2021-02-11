@@ -5,36 +5,21 @@ import Col from 'react-bootstrap/Col';
 import Sidebar from './components/sidebar'
 import Library from './pages/library'
 import AddSong from './pages/addsong'
-import { getStreamingUrl } from './api/manager'
 
+import GlobalState from './contexts/GlobalState'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
 
-  const playSong = (song) => {
-    setCurrentSong(song);
-    getStreamingUrl(song.id).then(response => {
-      if (response.status === 200) {
-        const streamUrl = response.data.result;
-        setCurrentStreamingUrl(streamUrl)
-      }
-    });
-  }
+  const [state, setState] = useState({
+    queue: [],
+    currentSong: null
+  });  
 
-  const libraryPage = (<Library handleSongClick={playSong} />)
-
-  const [currentSong, setCurrentSong] = useState({
-    id: -1,
-    art: "",
-    name: "No song selected",
-    artist: "Play from your library"
-  });
-
-  const [currentStreamingUrl, setCurrentStreamingUrl] = useState(null);
+  const libraryPage = (<Library />)
 
   const [currentPage, setCurrentPage] = useState((libraryPage))
-
 
   const changeScreen = (screenIndex) => {
     switch (screenIndex) {
@@ -52,19 +37,19 @@ const App = () => {
 
   return (
     <div className="App">
-      <Row className="m-0 p-0">
-        <Col sm="auto" className="m-0 p-0">
-          <Sidebar
-            changeScreen={changeScreen}
-            currentSong={currentSong}
-            streamUrl={currentStreamingUrl} />
-        </Col>
-        <Col className="page-container">
-          {currentPage}
-        </Col>
-      </Row>
-      <div className="align_bottom">
-      </div>
+      <GlobalState.Provider value={[state, setState]}>
+        <Row className="m-0 p-0">
+          <Col sm="auto" className="m-0 p-0">
+            <Sidebar
+              changeScreen={changeScreen} />
+          </Col>
+          <Col className="page-container">
+            {currentPage}
+          </Col>
+        </Row>
+        <div className="align_bottom">
+        </div>
+      </GlobalState.Provider>
     </div>
   );
 }
