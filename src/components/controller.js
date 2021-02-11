@@ -95,9 +95,11 @@ const Controller = (props) => {
                 <Col>
                     <img src={prevIcon} width="14px" height="14px" alt=""
                         onClick={() => {
+                            if(audio.currentTime < 3) {
+                                pauseAudio();
+                                goToPreviousSong();
+                            }
                             audio.currentTime = 0;
-                            pauseAudio();
-                            goToPreviousSong();
                         }} />
                 </Col>
                 <Col className="text-center">
