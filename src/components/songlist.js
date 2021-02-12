@@ -6,6 +6,9 @@ import equalizerAnimation from '../assets/equalizer_anim.gif'
 
 import GlobalState from '../contexts/GlobalState';
 
+import {isMobile} from 'react-device-detect';
+
+
 const SongList = (props) => {
     const [state, setState] = useContext(GlobalState);
 
@@ -26,7 +29,7 @@ const SongList = (props) => {
 
     if (data != null && data.length > 0) {
         return (
-            <Table striped hover variant="dark" className="mt-3">
+            <Table striped hover variant="dark" className={isMobile ? "table-mobile" : "table"}>
                 <thead>
                     <tr>
                         <th>Title</th>

@@ -81,9 +81,9 @@ const Controller = (props) => {
         audio.currentTime = selectedDuration;
     }
 
-    return (
+    const browserView = (
         <div className="controller">
-            <img className="albumart" src={albumArt} alt="" />
+            <img className="album-art" src={albumArt} alt="" />
             <input
                 className="seekbar"
                 type="range"
@@ -95,7 +95,7 @@ const Controller = (props) => {
                 <Col>
                     <img src={prevIcon} width="14px" height="14px" alt=""
                         onClick={() => {
-                            if(audio.currentTime < 3) {
+                            if (audio.currentTime < 3) {
                                 pauseAudio();
                                 goToPreviousSong();
                             }
@@ -123,10 +123,47 @@ const Controller = (props) => {
                         }} />
                 </Col>
             </Row>
-            <p className="songname pl-3 pt-3 pr-3 pb-1 m-0">{song.name}</p>
-            <p className="artistname pl-3 pb-3 pr-3 m-0">{song.artist}</p>
+            <p className="song-name pl-3 pt-3 pr-3 pb-1 m-0">{song.name}</p>
+            <p className="artist-name pl-3 pb-3 pr-3 m-0">{song.artist}</p>
         </div>
-    )
+    );
+
+    const mobileView = (
+        <div className="controller-mobile">
+            <input
+                className="seekbar"
+                type="range"
+                min={0}
+                max={audio.duration}
+                value={currentTime}
+                onChange={(event) => handleChange(event)} />
+
+            <div>
+                <img className="album-art-mobile" src={albumArt} alt="" />
+
+                <div className="song-details-mobile pt-2 pb-2 pl-3 m-0">
+                    <p className="song-name-mobile p-0 m-0">{song.name}</p>
+                    <p className="artist-name-mobile p-0 m-0">{song.artist}</p>
+                </div>
+                <img
+                className="play-button-mobile"
+                    src={(isAudioPlaying) ? pauseIcon : playIcon}
+                    width="14px"
+                    height="14px"
+                    alt=""
+                    onClick={() => {
+                        (isAudioPlaying) ? pauseAudio() : playAudio();
+                    }}
+                />
+            </div>
+        </div>
+    );
+
+    if (props.mobile) {
+        return mobileView;
+    } else {
+        return browserView;
+    }
 };
 
 export default Controller;
