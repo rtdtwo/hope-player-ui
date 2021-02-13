@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Controller from './controller'
 import logo from '../assets/logo.svg'
 
-const menuItems = ["Library", "Artists", "Favorites", "Add Song"];
+const menuItems = ["Library", "Artists", "Add Song"];
 
 class Sidebar extends Component {
     state = {

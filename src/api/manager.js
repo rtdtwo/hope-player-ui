@@ -9,18 +9,26 @@ export const getLibrary = () => {
     }
 };
 
-export const getStreamingUrl = (song_id) => {
+export const getStreamingUrl = (songId) => {
     try {
-        return axios.get(ENDPOINTS.streamSong, { params: { id: song_id } });
+        return axios.get(ENDPOINTS.streamSong, { params: { id: songId } });
     } catch (error) {
         console.log(error);
     }
 };
 
-export const addToLibrary = (songName, artist, url) => {
+export const addToLibrary = (songName, artist, url, tags) => {
     try {
-        return axios.post(ENDPOINTS.addToLibrary, { name: songName, artist: artist, url: url });
-    } catch(error) {
+        return axios.post(ENDPOINTS.addToLibrary, { name: songName, artist: artist, url: url, tags: tags });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const deleteSong = (songId) => {
+    try {
+        return axios.delete(ENDPOINTS.deleteSong, { params: { id: songId } });
+    } catch (error) {
         console.log(error);
     }
 }

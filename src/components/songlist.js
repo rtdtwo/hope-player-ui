@@ -1,40 +1,61 @@
 import React, { useContext } from 'react';
 import Table from 'react-bootstrap/Table';
-import noSongsIcon from '../assets/music_color.svg';
 
-import equalizerAnimation from '../assets/equalizer_anim.gif'
+import { deleteSong } from '../api/manager';
+
+import noSongsIcon from '../assets/music_color.svg';
+import equalizerAnimation from '../assets/equalizer_anim.gif';
+import youtubeIcon from '../assets/youtube.svg';
+import deleteIcon from '../assets/delete.svg';
+import playIcon from '../assets/play-button.svg';
 
 import GlobalState from '../contexts/GlobalState';
-
-import {isMobile} from 'react-device-detect';
-
+import { isMobile } from '../utils/utils';
+import config from '../config.json';
 
 const SongList = (props) => {
     const [state, setState] = useContext(GlobalState);
 
-    const data = state.queue.map(song => {
-        const date = new Date(song.added * 1000)
-        const formattedDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
+    const deleteTheSong = (songId) => {
+        const goForDelete = window.confirm("Are you sure you wish to delete this song?");
+        if (goForDelete) {
+            deleteSong(songId).then(response => {
+                if (response.status === 200) {
+                    alert('Deleted')
+                }
+            });
+        }
+    }
 
-        const equalizerAnim = (state.currentSong === song) ? equalizerAnimation : ''
+    const data = state.queue.map(song => {
+        const equalizerAnim = (state.currentSong === song) ? equalizerAnimation : playIcon
         return (
-            <tr key={song.id} onClick={() => setState(state => ({ ...state, currentSong: song }))}>
+            <tr key={song.id}>
+                <td><img title="Play" src={equalizerAnim} height="24px" alt="" onClick={() => setState(state => ({ ...state, currentSong: song }))} /></td>
                 <td>{song.name}</td>
                 <td>{song.artist}</td>
-                <td>{formattedDate}</td>
-                <td><img src={equalizerAnim} height="24px"/></td>
+                {!isMobile ? (
+                    <td>
+                        <a title="Watch on YouTube" href={song.url} target="_blank" rel="noreferrer"><img src={youtubeIcon} height="24px" alt="" /></a>
+                        {config.editAccess ? (
+                            <img src={deleteIcon} height="24px" alt="" className="ml-4" onClick={() => deleteTheSong(song.id)} />
+                        ) : (<div />)}
+                        
+                    </td>
+                ) : <p />}
+
             </tr>
         )
     });
 
     if (data != null && data.length > 0) {
         return (
-            <Table striped hover variant="dark" className={isMobile ? "table-mobile" : "table"}>
+            <Table striped hover variant="dark" className="table">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Title</th>
                         <th>Artist</th>
-                        <th>Added</th>
                         <th></th>
                     </tr>
                 </thead>

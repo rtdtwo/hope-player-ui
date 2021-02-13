@@ -51,6 +51,10 @@ body {
   float: left;
 }
 
+.table {
+  width: 100%;
+}
+
 .song-details-mobile {
   height: 64px;
   float: left;
