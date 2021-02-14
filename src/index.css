@@ -127,6 +127,12 @@ body {
   cursor: pointer;
 }
 
+.headline-dark {
+  color: #1a1a1a;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+}
+
 .page-headline {
   color: white;
   font-family: 'Poppins', sans-serif;

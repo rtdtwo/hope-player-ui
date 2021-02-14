@@ -20,7 +20,7 @@ const Controller = (props) => {
     const [currentTime, setCurrentTime] = useState(0);
     const [isAudioPlaying, setAudioPlaying] = useState(false);
 
-    const song = (state.currentSong === null) ? { 'art': '', name: 'No song selected', artist: 'Select a song from your library' } : state.currentSong;
+    const song = (state.currentSong === null) ? { 'art': '', name: 'No song playing', artist: 'Play one from your library' } : state.currentSong;
 
     const pauseAudio = () => {
         audio.pause();

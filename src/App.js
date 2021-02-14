@@ -5,13 +5,16 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import Sidebar from './components/sidebar'
 import Library from './pages/library'
-import AddSong from './pages/addsong'
+import AddSong from './components/addsong'
+import EditSong from './components/editsong'
+import AboutModal from './components/about'
 import GlobalState from './contexts/GlobalState'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Controller from './components/controller';
 import Navbar from './components/navbar';
 import { isMobile } from './utils/utils';
 import config from './config.json'
+import blackTextLogo from './assets/logo-black.svg';
 
 const App = () => {
 
@@ -20,10 +23,40 @@ const App = () => {
     currentSong: null
   });
 
-  const libraryPage = (<Library />)
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [showAboutModal, setShowAboutModal] = useState(false)
+  const [isModalEdit, setModalEdit] = useState(false)
+  const [songToEdit, setSongToEdit] = useState(null)
+
+  const showEditModal = (song) => {
+    setModalEdit(true)
+    setSongToEdit(song)
+    setShowAddModal(true)
+  }
+
+  const openAddModal = () => {
+    setModalEdit(false)
+    setSongToEdit(null)
+    setShowAddModal(true)
+  }
+
+  const hideAddModal = () => {
+    setModalEdit(false)
+    setSongToEdit(null)
+    setShowAddModal(false)
+  }
+
+  const openAboutModal = () => {
+    setShowAboutModal(true)
+  }
+
+  const closeAboutModal = () => {
+    setShowAboutModal(false)
+  }
+
+  const libraryPage = (<Library showEditModal={showEditModal} />)
 
   const [currentPage, setCurrentPage] = useState((libraryPage))
-  const [showAddModal, setShowAddModal] = useState(false)
 
   const changeScreen = (screenIndex) => {
     switch (screenIndex) {
@@ -31,8 +64,10 @@ const App = () => {
         setCurrentPage(libraryPage);
         break;
       case 2:
-        // setCurrentPage((<AddSong />));
-        config.editAccess ? setShowAddModal(true) : alert('Disabled')
+        config.editAccess ? openAddModal() : alert('Disabled')
+        break;
+      case 3:
+        openAboutModal();
         break;
       default:
         setCurrentPage((<div></div>));
@@ -48,13 +83,26 @@ const App = () => {
   }
 
   const addSongModal = config.editAccess ? (
-    <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
+    <Modal show={showAddModal} onHide={() => hideAddModal()}>
       <Modal.Header closeButton>
-        <Modal.Title>Add Song</Modal.Title>
+        <Modal.Title>{isModalEdit ? 'Edit Song' : 'Add Song'}</Modal.Title>
       </Modal.Header>
-      <AddSong setShowAddModal={setShowAddModal}/>
+      {
+        isModalEdit
+          ? <EditSong song={songToEdit} hideAddModal={hideAddModal} />
+          : <AddSong hideAddModal={hideAddModal} />
+      }
     </Modal>
   ) : (<div />)
+
+  const aboutModal = (
+    <Modal show={showAboutModal} onHide={() => closeAboutModal()}>
+      <Modal.Header closeButton>
+        <img src={blackTextLogo} alt="" width="180px" />
+      </Modal.Header>
+      <AboutModal />
+    </Modal>
+  )
 
   const browserView = (
     <div>
@@ -69,6 +117,7 @@ const App = () => {
       </Row>
 
       {addSongModal}
+      {aboutModal}
 
     </div>
   )

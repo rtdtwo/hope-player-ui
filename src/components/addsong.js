@@ -49,7 +49,7 @@ const AddSong = (props) => {
             </Form.Group>
             <Button variant="dark" onClick={() => {
                 addSong()
-                props.setShowAddModal(false)
+                props.hideAddModal()
             }}>Save</Button>{' '}
         </div>
 

@@ -7,6 +7,7 @@ import noSongsIcon from '../assets/music_color.svg';
 import equalizerAnimation from '../assets/equalizer_anim.gif';
 import youtubeIcon from '../assets/youtube.svg';
 import deleteIcon from '../assets/delete.svg';
+import editIcon from '../assets/pencil.svg';
 import playIcon from '../assets/play-button.svg';
 
 import GlobalState from '../contexts/GlobalState';
@@ -21,7 +22,7 @@ const SongList = (props) => {
         if (goForDelete) {
             deleteSong(songId).then(response => {
                 if (response.status === 200) {
-                    alert('Deleted')
+                    alert("Deleted")
                 }
             });
         }
@@ -40,7 +41,9 @@ const SongList = (props) => {
                         {config.editAccess ? (
                             <img src={deleteIcon} height="24px" alt="" className="ml-4" onClick={() => deleteTheSong(song.id)} />
                         ) : (<div />)}
-                        
+                        {config.editAccess ? (
+                            <img src={editIcon} height="24px" alt="" className="ml-4" onClick={() => props.showEditModal(song)} />
+                        ) : (<div />)}
                     </td>
                 ) : <p />}
 
