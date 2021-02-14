@@ -9,7 +9,7 @@ let songUrl = "";
 let tags = "";
 
 const addSong = () => {
-    if(songName === "" || songArtist === "" || songUrl === "") {
+    if (songName === "" || songArtist === "" || songUrl === "") {
         alert("Song name, artist and YouTube link are required")
     } else {
         addToLibrary(songName, songArtist, songUrl, tags).then(response => {

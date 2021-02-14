@@ -19,9 +19,9 @@ const Library = (props) => {
 
     useEffect(() => {
         getSongs()
-    }, 
-    // eslint-disable-next-line
-    []);
+    },
+        // eslint-disable-next-line
+        []);
 
 
     return (

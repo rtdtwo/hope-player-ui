@@ -61,7 +61,7 @@ const App = () => {
   const changeScreen = (screenIndex) => {
     switch (screenIndex) {
       case 0:
-        if(currentPage !== libraryPage) {
+        if (currentPage !== libraryPage) {
           setCurrentPage(libraryPage);
         }
         break;

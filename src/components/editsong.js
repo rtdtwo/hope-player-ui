@@ -9,7 +9,7 @@ let songUrl = "";
 let tags = "";
 
 const callEditSong = (originalSong) => {
-    if(songName === "" || songArtist === "" || songUrl === "") {
+    if (songName === "" || songArtist === "" || songUrl === "") {
         alert("Song name, artist and YouTube link are required")
     } else if (songName === originalSong.name && songArtist === originalSong.artist && songUrl === originalSong.url && tags === originalSong.tags) {
         alert("Nothing changed!")
@@ -25,9 +25,9 @@ const callEditSong = (originalSong) => {
 const EditSong = (props) => {
     const song = props.song;
 
-    if(song === null || song === undefined) {
+    if (song === null || song === undefined) {
         props.hideAddModal()
-        return(<div />)
+        return (<div />)
     }
 
     return (

@@ -15,7 +15,7 @@ class Sidebar extends Component {
     }
 
     changeMenu = (selectedMenuItem) => {
-        if(!menuIndexesToShowInactive.includes(selectedMenuItem)) {
+        if (!menuIndexesToShowInactive.includes(selectedMenuItem)) {
             this.setState({
                 selectedMenuItem: selectedMenuItem,
                 menu: this.generateMenu(selectedMenuItem)
