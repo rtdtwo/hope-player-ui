@@ -29,7 +29,7 @@ const SongList = (props) => {
     }
 
     const data = state.queue.map(song => {
-        const equalizerAnim = (state.currentSong === song) ? equalizerAnimation : playIcon
+        const equalizerAnim = (state.currentSong !== null && state.currentSong.id === song.id) ? equalizerAnimation : playIcon
         return (
             <tr key={song.id}>
                 <td><img title="Play" src={equalizerAnim} height="24px" alt="" onClick={() => setState(state => ({ ...state, currentSong: song }))} /></td>

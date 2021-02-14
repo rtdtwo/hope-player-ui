@@ -3,6 +3,7 @@ import Controller from './controller'
 import logo from '../assets/logo.svg'
 
 const menuItems = ["Library", "Artists", "Add Song", "About"];
+const menuIndexesToShowInactive = [2, 3]
 
 class Sidebar extends Component {
     state = {
@@ -14,10 +15,12 @@ class Sidebar extends Component {
     }
 
     changeMenu = (selectedMenuItem) => {
-        this.setState({
-            selectedMenuItem: selectedMenuItem,
-            menu: this.generateMenu(selectedMenuItem)
-        })
+        if(!menuIndexesToShowInactive.includes(selectedMenuItem)) {
+            this.setState({
+                selectedMenuItem: selectedMenuItem,
+                menu: this.generateMenu(selectedMenuItem)
+            })
+        }
     }
 
     generateMenu = (selectedMenuItem) => {
@@ -36,7 +39,7 @@ class Sidebar extends Component {
                     key={item}
                     onClick={() => {
                         this.changeMenu(index)
-                        this.props.changeScreen(index)
+                        this.props.changeScreen(index,)
                     }}>
                     {item}
                 </p>
@@ -53,9 +56,7 @@ class Sidebar extends Component {
                 {this.state.menu}
 
                 <div className="align_bottom">
-                    <Controller
-                        song={this.props.currentSong}
-                        streamUrl={this.props.streamUrl} />
+                    <Controller />
                 </div>
             </div>
         )

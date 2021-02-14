@@ -34,16 +34,36 @@ const Controller = (props) => {
 
     const goToNextSong = () => {
         console.log('Call next song')
-        const currentIndex = state.queue.indexOf(song);
-        if (currentIndex < state.queue.length - 1) {
-            setState(state => ({ ...state, currentSong: state.queue[currentIndex + 1] }))
+        const result = state.queue.filter(filterSong => {
+            return filterSong.id === song.id
+        })
+
+        let currentSongIndex = -1
+        for (let index = 0; index < state.queue.length; index++) {
+            const element = state.queue[index];
+            if (element.id === song.id) {
+                currentSongIndex = index;
+                break;
+            }
+        }
+
+        if (currentSongIndex < state.queue.length - 1) {
+            setState(state => ({ ...state, currentSong: state.queue[currentSongIndex + 1] }))
         }
     }
 
     const goToPreviousSong = () => {
-        const currentIndex = state.queue.indexOf(song);
-        if (currentIndex > 0) {
-            setState(state => ({ ...state, currentSong: state.queue[currentIndex - 1] }))
+        let currentSongIndex = 1
+        for (let index = 0; index < state.queue.length; index++) {
+            const element = state.queue[index];
+            if (element.id === song.id) {
+                currentSongIndex = index;
+                break;
+            }
+        }
+
+        if (currentSongIndex > 0) {
+            setState(state => ({ ...state, currentSong: state.queue[currentSongIndex - 1] }))
         }
     }
 
@@ -146,7 +166,7 @@ const Controller = (props) => {
                     <p className="artist-name-mobile p-0 m-0">{song.artist}</p>
                 </div>
                 <img
-                className="play-button-mobile"
+                    className="play-button-mobile"
                     src={(isAudioPlaying) ? pauseIcon : playIcon}
                     width="14px"
                     height="14px"

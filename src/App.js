@@ -61,7 +61,9 @@ const App = () => {
   const changeScreen = (screenIndex) => {
     switch (screenIndex) {
       case 0:
-        setCurrentPage(libraryPage);
+        if(currentPage !== libraryPage) {
+          setCurrentPage(libraryPage);
+        }
         break;
       case 2:
         config.editAccess ? openAddModal() : alert('Disabled')
