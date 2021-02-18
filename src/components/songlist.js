@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import Table from 'react-bootstrap/Table';
+import Badge from 'react-bootstrap/Badge';
 
 import { deleteSong } from '../api/manager';
 
@@ -30,11 +31,17 @@ const SongList = (props) => {
 
     const data = state.queue.map(song => {
         const equalizerAnim = (state.currentSong !== null && state.currentSong.id === song.id) ? equalizerAnimation : playIcon
+        const tags = song.tags.map(tag => {
+            return (
+                <Badge pill variant="warning" className="mr-1">{tag}</Badge>
+            )
+        })
         return (
             <tr key={song.id}>
                 <td><img title="Play" src={equalizerAnim} height="24px" alt="" onClick={() => setState(state => ({ ...state, currentSong: song }))} /></td>
                 <td>{song.name}</td>
                 <td>{song.artist}</td>
+                <td><div>{tags}</div></td>
                 {!isMobile ? (
                     <td>
                         <a title="Watch on YouTube" href={song.url} target="_blank" rel="noreferrer"><img src={youtubeIcon} height="24px" alt="" /></a>
@@ -59,6 +66,7 @@ const SongList = (props) => {
                         <th></th>
                         <th>Title</th>
                         <th>Artist</th>
+                        <th>Tags</th>
                         <th></th>
                     </tr>
                 </thead>

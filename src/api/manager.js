@@ -25,9 +25,9 @@ export const addToLibrary = (songName, artist, url, tags) => {
     }
 }
 
-export const editSong = (songName, artist, url, tags) => {
+export const editSong = (songId, songName, artist, tags) => {
     try {
-        return axios.post(ENDPOINTS.editSong, { name: songName, artist: artist, url: url, tags: tags });
+        return axios.put(ENDPOINTS.editSong, { id: songId, name: songName, artist: artist, tags: tags });
     } catch (error) {
         console.log(error);
     }

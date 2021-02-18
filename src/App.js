@@ -23,40 +23,42 @@ const App = () => {
     currentSong: null
   });
 
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [showAboutModal, setShowAboutModal] = useState(false)
-  const [isModalEdit, setModalEdit] = useState(false)
-  const [songToEdit, setSongToEdit] = useState(null)
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showAboutModal, setShowAboutModal] = useState(false);
+  const [isModalEdit, setModalEdit] = useState(false);
+  const [songToEdit, setSongToEdit] = useState(null);
 
   const showEditModal = (song) => {
-    setModalEdit(true)
-    setSongToEdit(song)
-    setShowAddModal(true)
+    setCurrentPage(<div/>);
+    setModalEdit(true);
+    setSongToEdit(song);
+    setShowAddModal(true);
   }
 
+  const libraryPage = <Library showEditModal={showEditModal} />;
+  const [currentPage, setCurrentPage] = useState(libraryPage);
+
   const openAddModal = () => {
-    setModalEdit(false)
-    setSongToEdit(null)
-    setShowAddModal(true)
+    setCurrentPage(<div/>);
+    setModalEdit(false);
+    setSongToEdit(null);
+    setShowAddModal(true);
   }
 
   const hideAddModal = () => {
-    setModalEdit(false)
-    setSongToEdit(null)
-    setShowAddModal(false)
+    setCurrentPage(libraryPage)
+    setModalEdit(false);
+    setSongToEdit(null);
+    setShowAddModal(false);
   }
 
   const openAboutModal = () => {
-    setShowAboutModal(true)
+    setShowAboutModal(true);
   }
 
   const closeAboutModal = () => {
-    setShowAboutModal(false)
+    setShowAboutModal(false);
   }
-
-  const libraryPage = (<Library showEditModal={showEditModal} />)
-
-  const [currentPage, setCurrentPage] = useState((libraryPage))
 
   const changeScreen = (screenIndex) => {
     switch (screenIndex) {
@@ -74,15 +76,15 @@ const App = () => {
       default:
         setCurrentPage((<div></div>));
         break;
-    }
-  }
+    };
+  };
 
   const mobilePageStyle = {
     height: window.innerHeight - 64 - 64,
     background: "#353b48",
     overflowX: "hidden",
     overflowY: "scroll",
-  }
+  };
 
   const addSongModal = config.editAccess ? (
     <Modal show={showAddModal} onHide={() => hideAddModal()}>
