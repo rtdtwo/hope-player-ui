@@ -3,6 +3,7 @@ import SongList from '../components/songlist';
 import { getLibrary } from '../api/manager';
 import { addToLibrary, editSong } from '../api/manager'
 import config from '../config.json'
+import { isMobile } from '../utils/utils'
 
 import GlobalState from '../contexts/GlobalState';
 import Row from 'react-bootstrap/Row';
@@ -145,7 +146,7 @@ const Library = (props) => {
 
 
     const displayEditModal = song => {
-        setAddOrEditSongDetails({...song, tags: song.tags.join()});
+        setAddOrEditSongDetails({ ...song, tags: song.tags.join() });
         setShowEditModal(true);
     }
 
@@ -157,9 +158,11 @@ const Library = (props) => {
     return (
         <div>
             <Row>
-                <Col>
-                    <h3 className="page-headline mb-3">Library</h3>
-                </Col>
+                {!isMobile ?
+                    <Col>
+                        <h3 className="page-headline mb-3">Library</h3>
+                    </Col>
+                    : ''}
                 {config.editAccess ?
                     <Col sm="auto">
                         <Button variant="outline-warning" onClick={() => {
@@ -167,7 +170,7 @@ const Library = (props) => {
                         }}>Add</Button>
                     </Col>
                     : ""}
-                <Col sm={12} className="m-0 p-0">
+                <Col sm={12} className={isMobile ? "m-0 pl-3 pr-3" : "m-0 p-0"}>
                     <SongList showEditModal={displayEditModal} />
                 </Col>
             </Row>

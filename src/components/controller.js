@@ -34,11 +34,6 @@ const Controller = (props) => {
     }
 
     const goToNextSong = () => {
-        console.log('Call next song')
-        const result = state.queue.filter(filterSong => {
-            return filterSong.id === song.id
-        })
-
         let currentSongIndex = -1
         for (let index = 0; index < state.queue.length; index++) {
             const element = state.queue[index];
@@ -64,12 +59,20 @@ const Controller = (props) => {
         }
 
         if (currentSongIndex > 0) {
-            setState(state => ({ ...state, currentSong: state.queue[currentSongIndex - 1] }))
+            setState(state => ({ ...state, currentSong: state.queue[currentSongIndex - 1] }));
         }
     }
 
     audio.ontimeupdate = () => {
-        setCurrentTime(audio.currentTime)
+        setCurrentTime(audio.currentTime);
+    }
+
+    audio.onpause = () => {
+        setAudioPlaying(false);
+    }
+
+    audio.onplay = () => {
+        setAudioPlaying(true);
     }
 
     audio.onended = () => {
