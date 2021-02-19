@@ -64,7 +64,7 @@ const App = () => {
 
   const mobileView = (
     <div class="mobile-view">
-      <Navbar />
+      <Navbar changeScreen={changeScreen} />
       <div style={mobilePageStyle}>
         {currentPage}
       </div>

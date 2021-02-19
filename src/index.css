@@ -51,6 +51,8 @@ body {
   float: left;
 }
 
+
+
 .table {
   width: 100%;
 }
@@ -72,7 +74,6 @@ body {
   width: 100%;
 }
 
-
 .song-name-mobile {
   font-size: 16px;
   font-weight: bold;
@@ -84,7 +85,6 @@ body {
   white-space: nowrap;
   width: 100%;
 }
-
 
 .artist-name {
   font-size: 16px;
@@ -110,6 +110,11 @@ body {
 
 .transparent {
   background: transparent;
+}
+
+.menu-mobile {
+  position: relative;
+  float: left;
 }
 
 .menu-active {
