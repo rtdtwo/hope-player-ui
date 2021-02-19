@@ -17,17 +17,17 @@ export const getStreamingUrl = (songId) => {
     }
 };
 
-export const addToLibrary = (songName, artist, url, tags) => {
+export const addToLibrary = (addSongDetails) => {
     try {
-        return axios.post(ENDPOINTS.addToLibrary, { name: songName, artist: artist, url: url, tags: tags });
+        return axios.post(ENDPOINTS.addToLibrary, addSongDetails);
     } catch (error) {
         console.log(error);
     }
 }
 
-export const editSong = (songId, songName, artist, tags) => {
+export const editSong = (editSongDetails) => {
     try {
-        return axios.put(ENDPOINTS.editSong, { id: songId, name: songName, artist: artist, tags: tags });
+        return axios.put(ENDPOINTS.editSong, editSongDetails);
     } catch (error) {
         console.log(error);
     }

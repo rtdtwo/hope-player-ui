@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Controller from './controller'
 import logo from '../assets/logo.svg'
 
-const menuItems = ["Library", "Artists", "Add Song", "About"];
-const menuIndexesToShowInactive = [2, 3]
+const menuItems = ["Library", "Artists", "About"];
+const menuIndexesToShowInactive = [3]
 
 class Sidebar extends Component {
     state = {

@@ -2,19 +2,14 @@ import React, { useState } from 'react';
 import './App.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Modal from 'react-bootstrap/Modal';
 import Sidebar from './components/sidebar'
 import Library from './pages/library'
-import AddSong from './components/addsong'
-import EditSong from './components/editsong'
-import AboutModal from './components/about'
+import About from './pages/about'
 import GlobalState from './contexts/GlobalState'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Controller from './components/controller';
 import Navbar from './components/navbar';
 import { isMobile } from './utils/utils';
-import config from './config.json'
-import blackTextLogo from './assets/logo-black.svg';
 
 const App = () => {
 
@@ -23,42 +18,9 @@ const App = () => {
     currentSong: null
   });
 
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showAboutModal, setShowAboutModal] = useState(false);
-  const [isModalEdit, setModalEdit] = useState(false);
-  const [songToEdit, setSongToEdit] = useState(null);
-
-  const showEditModal = (song) => {
-    setCurrentPage(<div/>);
-    setModalEdit(true);
-    setSongToEdit(song);
-    setShowAddModal(true);
-  }
-
-  const libraryPage = <Library showEditModal={showEditModal} />;
+  const libraryPage = <Library />;
+  const aboutPage = <About />;
   const [currentPage, setCurrentPage] = useState(libraryPage);
-
-  const openAddModal = () => {
-    setCurrentPage(<div/>);
-    setModalEdit(false);
-    setSongToEdit(null);
-    setShowAddModal(true);
-  }
-
-  const hideAddModal = () => {
-    setCurrentPage(libraryPage)
-    setModalEdit(false);
-    setSongToEdit(null);
-    setShowAddModal(false);
-  }
-
-  const openAboutModal = () => {
-    setShowAboutModal(true);
-  }
-
-  const closeAboutModal = () => {
-    setShowAboutModal(false);
-  }
 
   const changeScreen = (screenIndex) => {
     switch (screenIndex) {
@@ -68,10 +30,9 @@ const App = () => {
         }
         break;
       case 2:
-        config.editAccess ? openAddModal() : alert('Disabled')
-        break;
-      case 3:
-        openAboutModal();
+        if (currentPage !== aboutPage) {
+          setCurrentPage(aboutPage);
+        }
         break;
       default:
         setCurrentPage((<div></div>));
@@ -86,28 +47,6 @@ const App = () => {
     overflowY: "scroll",
   };
 
-  const addSongModal = config.editAccess ? (
-    <Modal show={showAddModal} onHide={() => hideAddModal()}>
-      <Modal.Header closeButton>
-        <Modal.Title>{isModalEdit ? 'Edit Song' : 'Add Song'}</Modal.Title>
-      </Modal.Header>
-      {
-        isModalEdit
-          ? <EditSong song={songToEdit} hideAddModal={hideAddModal} />
-          : <AddSong hideAddModal={hideAddModal} />
-      }
-    </Modal>
-  ) : (<div />)
-
-  const aboutModal = (
-    <Modal show={showAboutModal} onHide={() => closeAboutModal()}>
-      <Modal.Header closeButton>
-        <img src={blackTextLogo} alt="" width="180px" />
-      </Modal.Header>
-      <AboutModal />
-    </Modal>
-  )
-
   const browserView = (
     <div>
       <Row className="m-0 p-0">
@@ -119,9 +58,6 @@ const App = () => {
           {currentPage}
         </Col>
       </Row>
-
-      {addSongModal}
-      {aboutModal}
 
     </div>
   )
