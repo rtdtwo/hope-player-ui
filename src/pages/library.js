@@ -167,7 +167,7 @@ const Library = (props) => {
                         }}>Add</Button>
                     </Col>
                     : ""}
-                <Col sm={12}>
+                <Col sm={12} className="m-0 p-0">
                     <SongList showEditModal={displayEditModal} />
                 </Col>
             </Row>

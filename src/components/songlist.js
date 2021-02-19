@@ -33,7 +33,7 @@ const SongList = (props) => {
         const equalizerAnim = (state.currentSong !== null && state.currentSong.id === song.id) ? equalizerAnimation : playIcon
         const tags = song.tags.map(tag => {
             return (
-                <Badge pill variant="warning" className="mr-1">{tag}</Badge>
+                <Badge pill variant="secondary" className="mr-1">{tag}</Badge>
             )
         })
         return (
@@ -60,7 +60,7 @@ const SongList = (props) => {
 
     if (data != null && data.length > 0) {
         return (
-            <Table striped hover variant="dark" className="table">
+            <Table striped borderless className="table text-light">
                 <thead>
                     <tr>
                         <th></th>

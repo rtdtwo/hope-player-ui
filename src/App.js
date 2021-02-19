@@ -65,7 +65,7 @@ const App = () => {
   const mobileView = (
     <div class="mobile-view">
       <Navbar />
-      <div className="p-3" style={mobilePageStyle}>
+      <div style={mobilePageStyle}>
         {currentPage}
       </div>
       <Controller mobile="true" className="align_bottom" />

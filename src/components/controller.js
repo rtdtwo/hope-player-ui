@@ -28,6 +28,7 @@ const Controller = (props) => {
     }
 
     const playAudio = () => {
+        document.title = song.name + ' - Hope Player';
         audio.play();
         setAudioPlaying(true);
     }
