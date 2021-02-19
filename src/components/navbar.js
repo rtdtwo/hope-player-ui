@@ -14,7 +14,7 @@ class Navbar extends Component {
                         Menu</Dropdown.Toggle>
                     <Dropdown.Menu className="bg-dark">
                         <Dropdown.Item className="bg-dark text-light" onClick={() => this.props.changeScreen(0)}>Library</Dropdown.Item>
-                        <Dropdown.Divider/>
+                        <Dropdown.Divider />
                         <Dropdown.Item className="bg-dark text-light" onClick={() => this.props.changeScreen(2)}>About</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
