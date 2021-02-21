@@ -44,12 +44,12 @@ const SongList = (props) => {
                 <td><div>{tags}</div></td>
                 {!isMobile ? (
                     <td>
-                        <a title="Watch on YouTube" href={song.url} target="_blank" rel="noreferrer"><img src={youtubeIcon} height="24px" alt="" /></a>
+                        <a title="Watch on YouTube" href={song.url} target="_blank" rel="noreferrer"><img src={youtubeIcon} height="18px" alt="" /></a>
                         {config.editAccess ? (
-                            <img src={deleteIcon} height="24px" alt="" className="ml-4" onClick={() => deleteTheSong(song.id)} />
+                            <img title="Edit Song" src={editIcon} height="16px" alt="" className="ml-4" onClick={() => props.showEditModal(song)} />
                         ) : (<div />)}
                         {config.editAccess ? (
-                            <img src={editIcon} height="24px" alt="" className="ml-4" onClick={() => props.showEditModal(song)} />
+                            <img title="Delete Song" src={deleteIcon} height="16px" alt="" className="ml-4" onClick={() => deleteTheSong(song.id)} />
                         ) : (<div />)}
                     </td>
                 ) : <p />}

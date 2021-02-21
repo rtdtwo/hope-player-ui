@@ -39,7 +39,7 @@ class Sidebar extends Component {
                     key={item}
                     onClick={() => {
                         this.changeMenu(index)
-                        this.props.changeScreen(index,)
+                        this.props.changeScreen(index)
                     }}>
                     {item}
                 </p>
