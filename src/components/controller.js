@@ -11,6 +11,9 @@ import GlobalState from '../contexts/GlobalState';
 
 import { getStreamingUrl } from '../api/manager'
 
+import { getStreamQuality } from '../utils/storage'
+
+
 let previousStreamUrl = ''
 let audio = new Audio();
 audio.autoplay = false;
@@ -84,18 +87,22 @@ const Controller = (props) => {
     useEffect(() => {
         audio.currentTime = 0;
         pauseAudio();
-        getStreamingUrl(song.id).then(response => {
-            if (response.status === 200) {
-                const streamingUrl = response.data.result;
-                if (previousStreamUrl !== streamingUrl) {
-                    pauseAudio();
-                    audio = new Audio(streamingUrl);
-                    playAudio();
-                    previousStreamUrl = streamingUrl;
+        if (song.id !== undefined) {
+            getStreamingUrl(song.id, getStreamQuality()).then(response => {
+                if (response.status === 200) {
+                    const streamingUrl = response.data.result;
+                    if (previousStreamUrl !== streamingUrl) {
+                        pauseAudio();
+                        audio = new Audio(streamingUrl);
+                        playAudio();
+                        previousStreamUrl = streamingUrl;
+                    }
                 }
-            }
-        });
-    }, [song.id])
+            });
+        }
+    },
+        // eslint-disable-next-line 
+        [song.id])
 
     const albumArt = (song.art !== '') ? song.art : blankAlbumArt;
 
@@ -112,7 +119,7 @@ const Controller = (props) => {
                 className="seekbar"
                 type="range"
                 min={0}
-                max={audio.duration}
+                max={String(audio.duration)}
                 value={currentTime}
                 onChange={(event) => handleChange(event)} />
             <Row className="audio-controls text-center m-0">
@@ -167,7 +174,7 @@ const Controller = (props) => {
                 className="seekbar"
                 type="range"
                 min={0}
-                max={audio.duration}
+                max={String(audio.duration)}
                 value={currentTime}
                 onChange={(event) => handleChange(event)} />
 

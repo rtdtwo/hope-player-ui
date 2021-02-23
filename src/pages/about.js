@@ -4,7 +4,7 @@ import logo from '../assets/logo.svg';
 const About = () => {
     return (
         <div className="m-4 text-light" align="justify">
-            <img src={logo} height="50px"className="mb-4"/>
+            <img src={logo} height="50px"className="mb-4" alt=""/>
             <p>A music player built using <a rel="noreferrer" href="https://github.com/facebook/react/" target="_blank">React.js</a> that lets you play YouTube videos as streaming audio.</p>
             <p>👨🏽‍💻 with ❤️ by <a rel="noreferrer" href="https://github.com/tatirajurishabh" target="_blank">Rishabh Tatiraju</a> | <a rel="noreferrer" href="https://github.com/tatirajurishabh/hope-player-ui" target="_blank">Source Code</a></p>
             <h5 className="headline-light mt-4">Why <i>Hope</i>?</h5>

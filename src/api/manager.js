@@ -17,9 +17,9 @@ export const getArtists = () => {
     }
 }
 
-export const getStreamingUrl = (songId) => {
+export const getStreamingUrl = (songId, quality) => {
     try {
-        return axios.get(ENDPOINTS.streamSong, { params: { id: songId } });
+        return axios.get(ENDPOINTS.streamSong, { params: { id: songId, quality: quality } });
     } catch (error) {
         console.log(error);
     }

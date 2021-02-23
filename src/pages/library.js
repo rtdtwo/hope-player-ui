@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SongList from '../components/songlist';
 import { getLibrary } from '../api/manager';
 import { addToLibrary, editSong } from '../api/manager'
 import config from '../config.json'
 import { isMobile } from '../utils/utils'
 
-import GlobalState from '../contexts/GlobalState';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
@@ -22,7 +21,6 @@ const Library = (props) => {
         tags: ""
     };
 
-    const [state, setState] = useContext(GlobalState);
     const [librarySongs, setLibrarySongs] = useState([])
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
