@@ -177,3 +177,13 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+.artist-card-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.artist-page-image {
+  width: 100px;
+}

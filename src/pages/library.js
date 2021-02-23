@@ -23,6 +23,7 @@ const Library = (props) => {
     };
 
     const [state, setState] = useContext(GlobalState);
+    const [librarySongs, setLibrarySongs] = useState([])
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [addOrEditSongDetails, setAddOrEditSongDetails] = useState(blankSong);
@@ -59,7 +60,7 @@ const Library = (props) => {
         getLibrary().then(response => {
             if (response.status === 200) {
                 const data = response.data;
-                setState(state => ({ ...state, queue: data }));
+                setLibrarySongs(data);
             }
         });
     };
@@ -171,7 +172,7 @@ const Library = (props) => {
                     </Col>
                     : ""}
                 <Col sm={12} className={isMobile ? "m-0 pl-3 pr-3" : "m-0 p-0"}>
-                    <SongList showEditModal={displayEditModal} />
+                    <SongList showEditModal={displayEditModal} playlist={librarySongs}/>
                 </Col>
             </Row>
             {addSongModal}

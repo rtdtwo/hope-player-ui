@@ -6,13 +6,14 @@ import { serverUrl } from '../config.json'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import SongList from '../components/songlist';
 
 const Artists = (props) => {
 
-    const [artists, setArtists] = useState([])
+    const [artistSongs, setArtistSongs] = useState([])
 
-    const callGetArtists = () => {
-        getArtists().then(response => {
+    const callGetArtistSongs = () => {
+        getArtistSongs().then(response => {
             if (response.status === 200) {
                 const data = response.data.results;
                 setArtists(data);
@@ -21,7 +22,7 @@ const Artists = (props) => {
     };
 
     useEffect(() => {
-        callGetArtists()
+        callGetArtistSongs()
     },
         // eslint-disable-next-line
         []);
@@ -44,14 +45,15 @@ const Artists = (props) => {
     return (
         <div className="ml-2 mr-2">
             <Row>
-                {!isMobile ?
-                    <Col>
-                        <h3 className="page-headline mb-3">Artists</h3>
-                    </Col>
-                    : ''}
-            </Row>
-            <Row className={isMobile ? "mb-5" : ""}>
-                {artistList}
+                <Col xs={12} className="text-center">
+                    <Image roundedCircle src={props.artist.image} className="artist-page-image" />
+                    <h3>{props.artist.name}</h3>
+                </Col>
+
+                <Col xs={12} className="text-center">
+                    <SongList playlist={artistSongs} />
+                </Col>
+
             </Row>
         </div>
     )

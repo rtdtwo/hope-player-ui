@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import Controller from './controller'
 import logo from '../assets/logo.svg'
 
-const menuItems = ["Library", "Artists", "About"];
-const menuIndexesToShowInactive = [3]
+const menuItems = ["Library", "Artists", "Settings", "About"];
 
 class Sidebar extends Component {
     state = {
@@ -15,12 +14,10 @@ class Sidebar extends Component {
     }
 
     changeMenu = (selectedMenuItem) => {
-        if (!menuIndexesToShowInactive.includes(selectedMenuItem)) {
-            this.setState({
-                selectedMenuItem: selectedMenuItem,
-                menu: this.generateMenu(selectedMenuItem)
-            })
-        }
+        this.setState({
+            selectedMenuItem: selectedMenuItem,
+            menu: this.generateMenu(selectedMenuItem)
+        })
     }
 
     generateMenu = (selectedMenuItem) => {

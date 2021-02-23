@@ -9,6 +9,14 @@ export const getLibrary = () => {
     }
 };
 
+export const getArtists = () => {
+    try {
+        return axios.get(ENDPOINTS.artists);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const getStreamingUrl = (songId) => {
     try {
         return axios.get(ENDPOINTS.streamSong, { params: { id: songId } });

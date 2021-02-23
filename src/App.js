@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import './App.css';
+import GlobalState from './contexts/GlobalState'
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Sidebar from './components/sidebar'
-import Library from './pages/library'
-import About from './pages/about'
-import GlobalState from './contexts/GlobalState'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Controller from './components/controller';
-import Navbar from './components/navbar';
+
 import { isMobile } from './utils/utils';
+import Sidebar from './components/sidebar';
+import Navbar from './components/navbar';
+import Controller from './components/controller';
+
+import Library from './pages/library';
+import About from './pages/about';
+import Artists from './pages/artists';
+import Settings from './pages/settings';
 
 const App = () => {
 
@@ -20,6 +25,8 @@ const App = () => {
 
   const libraryPage = <Library />;
   const aboutPage = <About />;
+  const artistsPage = <Artists />;
+  const settingsPage = <Settings />;
   const [currentPage, setCurrentPage] = useState(libraryPage);
 
   const changeScreen = (screenIndex) => {
@@ -29,7 +36,17 @@ const App = () => {
           setCurrentPage(libraryPage);
         }
         break;
+      case 1:
+        if (currentPage !== artistsPage) {
+          setCurrentPage(artistsPage);
+        }
+        break;
       case 2:
+        if (currentPage !== settingsPage) {
+          setCurrentPage(settingsPage);
+        }
+        break;
+      case 3:
         if (currentPage !== aboutPage) {
           setCurrentPage(aboutPage);
         }

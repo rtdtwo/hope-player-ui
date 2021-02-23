@@ -117,7 +117,11 @@ const Controller = (props) => {
                 onChange={(event) => handleChange(event)} />
             <Row className="audio-controls text-center m-0">
                 <Col>
-                    <img src={prevIcon} width="14px" height="14px" alt=""
+                    <img src={prevIcon}
+                        width="14px"
+                        height="14px"
+                        alt=""
+                        title="Previous Track"
                         onClick={() => {
                             if (audio.currentTime < 3) {
                                 pauseAudio();
@@ -128,6 +132,7 @@ const Controller = (props) => {
                 </Col>
                 <Col className="text-center">
                     <img
+                        title={isAudioPlaying ? "Pause" : "Play"}
                         src={(isAudioPlaying) ? pauseIcon : playIcon}
                         width="14px"
                         height="14px"
@@ -139,7 +144,11 @@ const Controller = (props) => {
                     />
                 </Col>
                 <Col className="text-center">
-                    <img src={nextIcon} width="14px" height="14px" alt=""
+                    <img src={nextIcon}
+                        width="14px"
+                        height="14px"
+                        alt=""
+                        title="Next Track"
                         onClick={() => {
                             audio.currentTime = 0;
                             pauseAudio();
@@ -170,8 +179,9 @@ const Controller = (props) => {
                     <p className="artist-name-mobile p-0 m-0">{song.artist}</p>
                 </div>
                 <img
+                    title={isAudioPlaying ? "Pause" : "Play"}
                     className="play-button-mobile"
-                    src={(isAudioPlaying) ? pauseIcon : playIcon}
+                    src={isAudioPlaying ? pauseIcon : playIcon}
                     width="14px"
                     height="14px"
                     alt=""
