@@ -36,8 +36,10 @@ const SongList = (props) => {
                 <Badge key={tag} pill variant="secondary" className="mr-1">{tag}</Badge>
             )
         })
+        const background = (state.currentSong !== null && state.currentSong.id === song.id) ? 'bg-secondary' : ''
+
         return (
-            <tr key={song.id}>
+            <tr key={song.id} className={background}>
                 <td><img title="Play" src={equalizerAnim} height="24px" alt="" onClick={() => setState(state => ({ ...state, currentSong: song, queue: props.playlist }))} /></td>
                 <td>{song.name}</td>
                 <td>{song.artist}</td>
