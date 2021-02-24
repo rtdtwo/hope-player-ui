@@ -8,5 +8,6 @@ export const ENDPOINTS = {
     streamSong: SERVER_BASE_URL + '/stream',
     addToLibrary: SERVER_BASE_URL + '/add',
     deleteSong: SERVER_BASE_URL + '/delete',
-    editSong: SERVER_BASE_URL + '/edit'
+    editSong: SERVER_BASE_URL + '/edit',
+    lyrics: SERVER_BASE_URL + '/lyrics',
 }

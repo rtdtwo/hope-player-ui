@@ -10,6 +10,8 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+
 
 const Library = (props) => {
     // eslint-disable-next-line
@@ -18,9 +20,11 @@ const Library = (props) => {
         name: "",
         artist: "",
         url: "",
-        tags: ""
+        tags: "",
+        lyrics: ""
     };
 
+    const [libraryLoading, setLibraryLoading] = useState(false)
     const [librarySongs, setLibrarySongs] = useState([])
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -55,10 +59,12 @@ const Library = (props) => {
     }
 
     const getSongs = () => {
+        setLibraryLoading(true);
         getLibrary().then(response => {
             if (response.status === 200) {
                 const data = response.data;
                 setLibrarySongs(data);
+                setLibraryLoading(false);
             }
         });
     };
@@ -79,7 +85,6 @@ const Library = (props) => {
                 <Form.Label>Name</Form.Label>
                 <Form.Control type="text" placeholder="eg. Hey Jude" onChange={(e) => {
                     setAddOrEditSongDetails({ ...addOrEditSongDetails, name: e.target.value })
-
                 }} />
             </Form.Group>
             <Form.Group>
@@ -143,7 +148,6 @@ const Library = (props) => {
         </Modal.Footer>
     </Modal>
 
-
     const displayEditModal = song => {
         setAddOrEditSongDetails({ ...song, tags: song.tags.join() });
         setShowEditModal(true);
@@ -156,12 +160,7 @@ const Library = (props) => {
 
     return (
         <div>
-            <Row>
-                {!isMobile ?
-                    <Col>
-                        <h3 className="page-headline mb-3">Library</h3>
-                    </Col>
-                    : ''}
+            <Row className="m-0">
                 {config.editAccess ?
                     <Col sm="auto">
                         <Button variant="outline-warning" onClick={() => {
@@ -170,7 +169,16 @@ const Library = (props) => {
                     </Col>
                     : ""}
                 <Col sm={12} className={isMobile ? "m-0 pl-3 pr-3" : "m-0 p-0"}>
-                    <SongList showEditModal={displayEditModal} playlist={librarySongs}/>
+                    {
+                        libraryLoading ?
+                            <div className="text-center mt-3">
+                                  <Spinner animation="border" variant="warning" />
+                                  <h5 className="page-headline mt-3">Loading playlist</h5>
+                            </div>
+                            :
+                            <SongList showEditModal={displayEditModal} playlist={librarySongs} />
+                    }
+
                 </Col>
             </Row>
             {addSongModal}

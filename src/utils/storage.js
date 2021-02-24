@@ -1,7 +1,8 @@
 const storage = window.localStorage;
 
 export const getStreamQuality = () => {
-    return storage.getItem("streamQuality");
+    const quality = storage.getItem("streamQuality");
+    return quality === null || quality === undefined ? "high" : quality
 }
 
 export const setStreamQuality =(quality) => {

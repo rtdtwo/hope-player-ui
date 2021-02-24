@@ -48,3 +48,11 @@ export const deleteSong = (songId) => {
         console.log(error);
     }
 }
+
+export const getSongLyrics = (songId) => {
+    try {
+        return axios.get(ENDPOINTS.lyrics, { params: { id: songId } });
+    } catch (error) {
+        console.log(error);
+    }
+}

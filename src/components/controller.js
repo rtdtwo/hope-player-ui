@@ -4,12 +4,18 @@ import nextIcon from '../assets/next.svg';
 import prevIcon from '../assets/prev.svg';
 import playIcon from '../assets/play.svg';
 import pauseIcon from '../assets/pause.svg';
+import repeatIcon from '../assets/repeat.svg';
+import shuffleIcon from '../assets/shuffle.svg';
+import lyricsIcon from '../assets/lyrics.svg';
+
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 import GlobalState from '../contexts/GlobalState';
 
-import { getStreamingUrl } from '../api/manager'
+import { getStreamingUrl, getSongLyrics } from '../api/manager'
 
 import { getStreamQuality } from '../utils/storage'
 
@@ -20,10 +26,13 @@ audio.autoplay = false;
 
 const Controller = (props) => {
     const [state, setState] = useContext(GlobalState);
+
+    const song = (state.currentSong === null) ? { 'lyrics': null, 'art': '', name: 'No song playing', artist: 'Play one from your library' } : state.currentSong;
+
     const [currentTime, setCurrentTime] = useState(0);
     const [isAudioPlaying, setAudioPlaying] = useState(false);
-
-    const song = (state.currentSong === null) ? { 'art': '', name: 'No song playing', artist: 'Play one from your library' } : state.currentSong;
+    const [showLyrics, setShowLyrics] = useState(false);
+    const [songLyrics, setSongLyrics] = useState(song.lyrics);
 
     const pauseAudio = () => {
         audio.pause();
@@ -112,6 +121,43 @@ const Controller = (props) => {
         audio.currentTime = selectedDuration;
     }
 
+    const showLyricsModal = () => {
+        setShowLyrics(true)
+        if (song.lyrics !== null) {
+            if (song.lyrics === '') {
+                setSongLyrics('Fetching song lyrics, please wait ...')
+                getSongLyrics(song.id).then(response => {
+                    if (response.status === 200) {
+                        const lyrics = response.data.result
+                        if (lyrics != null) {
+                            setSongLyrics(lyrics)
+                        } else {
+                            setSongLyrics('Song lyrics unavailable.')
+                        }
+                        song.lyrics = lyrics
+                    } else {
+                        setSongLyrics('Song lyrics unavailable. Please try later.')
+                    }
+                })
+            } else {
+                console.log(song.lyrics)
+                setSongLyrics(song.lyrics)
+            }
+        } else {
+            setShowLyrics(false)
+        }
+    }
+
+    const lyricsModal = <Modal show={showLyrics} onHide={() => setShowLyrics(false)}>
+        <Modal.Header closeButton>
+            <Modal.Title>Lyrics</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="lyric-body">{songLyrics}</Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowLyrics(false)}>Close</Button>
+        </Modal.Footer>
+    </Modal>
+
     const browserView = (
         <div className="controller">
             <img className="album-art" src={albumArt} alt="" />
@@ -163,8 +209,38 @@ const Controller = (props) => {
                         }} />
                 </Col>
             </Row>
+
+            <Row className="audio-controls text-center m-0 pt-2">
+                <Col>
+                    <img src={repeatIcon}
+                        width="16px"
+                        height="16px"
+                        alt=""
+                        title="Repeat" />
+                </Col>
+                <Col className="text-center">
+                    <img
+                        title="Shuffle"
+                        src={shuffleIcon}
+                        width="16px"
+                        height="16px"
+                        alt=""
+                    />
+                </Col>
+                <Col className="text-center">
+                    <img src={lyricsIcon}
+                        width="16px"
+                        height="16px"
+                        alt=""
+                        title="Lyrics"
+                        onClick={() => {
+                            showLyricsModal();
+                        }} />
+                </Col>
+            </Row>
             <p className="song-name pl-3 pt-3 pr-3 pb-1 m-0">{song.name}</p>
             <p className="artist-name pl-3 pb-3 pr-3 m-0">{song.artist}</p>
+            {lyricsModal}
         </div>
     );
 

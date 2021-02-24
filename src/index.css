@@ -187,3 +187,14 @@ body {
 .artist-page-image {
   width: 100px;
 }
+
+.current-song {
+  border-top: thin solid #485460;
+  border-bottom: thin solid #485460;
+}
+
+.lyric-body {
+  white-space: pre-wrap;
+  height: 60vh;
+  overflow-y: auto;
+}

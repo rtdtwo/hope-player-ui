@@ -6,16 +6,20 @@ import { serverUrl } from '../config.json'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import Spinner from 'react-bootstrap/Spinner';
 
 const Artists = (props) => {
 
-    const [artists, setArtists] = useState([])
+    const [artists, setArtists] = useState([]);
+    const [artistsLoading, setArtistsLoading] = useState(false);
 
     const callGetArtists = () => {
+        setArtistsLoading(true);
         getArtists().then(response => {
             if (response.status === 200) {
                 const data = response.data.results;
                 setArtists(data);
+                setArtistsLoading(false);
             }
         });
     };
@@ -42,16 +46,17 @@ const Artists = (props) => {
     });
 
     return (
-        <div className="ml-2 mr-2">
-            <Row>
-                {!isMobile ?
-                    <Col>
-                        <h3 className="page-headline mb-3">Artists</h3>
-                    </Col>
-                    : ''}
-            </Row>
+        <div className="pl-4 pr-4 pb-4">
             <Row className={isMobile ? "mb-5" : ""}>
-                {artistList}
+                {
+                    artistsLoading ?
+                        <Col xs={12} className="text-center mt-3">
+                            <Spinner animation="border" variant="warning" />
+                            <h5 className="page-headline mt-3">Loading artists</h5>
+                        </Col>
+                        : artistList
+                }
+                
             </Row>
         </div>
     )

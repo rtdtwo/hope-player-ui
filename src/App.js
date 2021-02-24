@@ -71,7 +71,7 @@ const App = () => {
           <Sidebar
             changeScreen={changeScreen} />
         </Col>
-        <Col className="page m-0 p-3">
+        <Col className="page m-0 p-0">
           {currentPage}
         </Col>
       </Row>
