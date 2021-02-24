@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import blankAlbumArt from '../assets/album_art_blank.jpg';
+import geniusLogo from '../assets/genius-logo.jpg';
 import nextIcon from '../assets/next.svg';
 import prevIcon from '../assets/prev.svg';
 import playIcon from '../assets/play.svg';
@@ -148,14 +149,11 @@ const Controller = (props) => {
         }
     }
 
-    const lyricsModal = <Modal show={showLyrics} onHide={() => setShowLyrics(false)}>
+    const lyricsModal = <Modal centered show={showLyrics} onHide={() => setShowLyrics(false)}>
         <Modal.Header closeButton>
-            <Modal.Title>Lyrics</Modal.Title>
+            <p className="m-0 p-0"><span className="mr-3"><img src={geniusLogo} width="36px" /></span>Lyrics powered by Genius</p>
         </Modal.Header>
         <Modal.Body className="lyric-body">{songLyrics}</Modal.Body>
-        <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowLyrics(false)}>Close</Button>
-        </Modal.Footer>
     </Modal>
 
     const browserView = (

@@ -62,7 +62,7 @@ const Library = (props) => {
         setLibraryLoading(true);
         getLibrary().then(response => {
             if (response.status === 200) {
-                const data = response.data;
+                const data = response.data.results;
                 setLibrarySongs(data);
                 setLibraryLoading(false);
             }
