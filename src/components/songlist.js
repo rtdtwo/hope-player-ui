@@ -30,7 +30,11 @@ const SongList = (props) => {
     }
 
     const callPlay = (song) => {
-        setState(state => ({ ...state, currentSong: song, queue: props.playlist, originalQueue: props.playlist }))
+        let newQueue = [...props.playlist]
+        if (state.shuffleOn) {
+            newQueue.sort(() => Math.random() - 0.5);
+        }
+        setState(state => ({ ...state, currentSong: song, queue: newQueue, originalQueue: props.playlist }))
     }
 
     const data = props.playlist.map(song => {

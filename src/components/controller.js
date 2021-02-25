@@ -34,7 +34,6 @@ const Controller = (props) => {
     const [isAudioPlaying, setAudioPlaying] = useState(false);
     const [showLyrics, setShowLyrics] = useState(false);
     const [songLyrics, setSongLyrics] = useState(song.lyrics);
-    const [shuffleOn, setShuffleOn] = useState(false);
 
     const pauseAudio = () => {
         audio.pause();
@@ -161,8 +160,8 @@ const Controller = (props) => {
     }
 
     const changeShuffle = () => {
-        shuffleOn ? unshuffleQueue() : shuffleQueue()
-        setShuffleOn(!shuffleOn)
+        state.shuffleOn ? unshuffleQueue() : shuffleQueue()
+        setState(state => ({ ...state, shuffleOn: !state.shuffleOn }))
     }
 
     const lyricsModal = <Modal centered show={showLyrics} onHide={() => setShowLyrics(false)}>
@@ -233,7 +232,7 @@ const Controller = (props) => {
                 <Col className="text-center">
                     <img
                         title="Shuffle"
-                        src={shuffleOn ? shuffleOnIcon : shuffleIcon}
+                        src={state.shuffleOn ? shuffleOnIcon : shuffleIcon}
                         width="16px"
                         height="16px"
                         alt=""

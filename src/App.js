@@ -21,7 +21,8 @@ const App = () => {
   const [state, setState] = useState({
     queue: [],
     currentSong: null,
-    originalQueue: []
+    originalQueue: [],
+    shuffleOn: false
   });
 
   const libraryPage = <Library />;
