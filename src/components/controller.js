@@ -77,13 +77,13 @@ const Controller = (props) => {
     }
 
     const unshuffleQueue = () => {
-        setState(state => ({ ...state, queue: state.originalQueue}));
+        setState(state => ({ ...state, queue: state.originalQueue }));
     }
 
     const shuffleQueue = () => {
         let shuffledQueue = [...state.originalQueue];
         shuffledQueue.sort(() => Math.random() - 0.5);
-        setState(state => ({ ...state, queue: shuffledQueue}));
+        setState(state => ({ ...state, queue: shuffledQueue }));
     }
 
     audio.ontimeupdate = () => {
@@ -165,7 +165,8 @@ const Controller = (props) => {
     }
 
     const lyricsModal = <Modal centered show={showLyrics} onHide={() => setShowLyrics(false)}>
-        <Modal.Header closeButton>
+        <Modal.Header closegit status
+            Button>
             <p className="m-0 p-0"><span className="mr-3"><img alt="" src={geniusLogo} width="36px" /></span>Lyrics powered by Genius</p>
         </Modal.Header>
         <Modal.Body className="lyric-body">{songLyrics}</Modal.Body>

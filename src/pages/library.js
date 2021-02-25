@@ -172,8 +172,8 @@ const Library = (props) => {
                     {
                         libraryLoading ?
                             <div className="text-center mt-3">
-                                  <Spinner animation="border" variant="warning" />
-                                  <h5 className="page-headline mt-3">Loading playlist</h5>
+                                <Spinner animation="border" variant="warning" />
+                                <h5 className="page-headline mt-3">Loading playlist</h5>
                             </div>
                             :
                             <SongList showEditModal={displayEditModal} playlist={librarySongs} />
