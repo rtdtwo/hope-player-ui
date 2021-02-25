@@ -165,8 +165,7 @@ const Controller = (props) => {
     }
 
     const lyricsModal = <Modal centered show={showLyrics} onHide={() => setShowLyrics(false)}>
-        <Modal.Header closegit status
-            Button>
+        <Modal.Header closeButton>
             <p className="m-0 p-0"><span className="mr-3"><img alt="" src={geniusLogo} width="36px" /></span>Lyrics powered by Genius</p>
         </Modal.Header>
         <Modal.Body className="lyric-body">{songLyrics}</Modal.Body>
