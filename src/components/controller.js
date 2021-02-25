@@ -15,13 +15,15 @@ import lyricsIcon from '../assets/lyrics.svg';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
+import Spinner from 'react-bootstrap/Spinner';
 
 import GlobalState from '../contexts/GlobalState';
 
-import { getStreamingUrl, getSongLyrics } from '../api/manager'
+import { getStreamingUrl, getSongLyrics } from '../api/manager';
 
-import { getStreamQuality } from '../utils/storage'
-import { REPEAT_MODE } from '../utils/constants'
+import { getStreamQuality } from '../utils/storage';
+import { REPEAT_MODE } from '../utils/constants';
+import { shufflePlaylist } from '../utils/utils';
 
 
 let previousStreamUrl = ''
@@ -35,8 +37,9 @@ const Controller = (props) => {
 
     const [currentTime, setCurrentTime] = useState(0);
     const [isAudioPlaying, setAudioPlaying] = useState(false);
+    const [isAudioBuffering, setAudioBuffering] = useState(false);
     const [showLyrics, setShowLyrics] = useState(false);
-    const [songLyrics, setSongLyrics] = useState(song.lyrics);
+    const [songLyrics, setSongLyrics] = useState(song?.lyrics);
 
     const pauseAudio = () => {
         audio.pause();
@@ -44,7 +47,7 @@ const Controller = (props) => {
     }
 
     const playAudio = () => {
-        document.title = song.name + ' - Hope Player';
+        document.title = song?.name + ' - Hope Player';
         audio.play();
         setAudioPlaying(true);
     }
@@ -58,13 +61,13 @@ const Controller = (props) => {
         let currentSongIndex = -1
         for (let index = 0; index < state.queue.length; index++) {
             const element = state.queue[index];
-            if (element.id === song.id) {
+            if (element.id === song?.id) {
                 currentSongIndex = index;
                 break;
             }
         }
 
-        return currentSongIndex
+        return currentSongIndex;
     }
 
     const goToNextSong = (force) => {
@@ -72,6 +75,7 @@ const Controller = (props) => {
         let nextSongIndex = currentSongIndex;
         switch (state.repeatMode) {
             case REPEAT_MODE.NONE:
+            default:
                 if (currentSongIndex < state.queue.length - 1) {
                     nextSongIndex++;
                 }
@@ -101,7 +105,7 @@ const Controller = (props) => {
         let previousSongIndex = currentSongIndex;
         if (currentSongIndex > 0) {
             previousSongIndex--;
-        } else if (currentSongIndex == 0 && state.repeatMode === 0) {
+        } else if (currentSongIndex === 0 && state.repeatMode === 0) {
             previousSongIndex = state.queue.length - 1
         }
 
@@ -113,8 +117,7 @@ const Controller = (props) => {
     }
 
     const shuffleQueue = () => {
-        let shuffledQueue = [...state.originalQueue];
-        shuffledQueue.sort(() => Math.random() - 0.5);
+        const shuffledQueue = shufflePlaylist([...state.originalQueue], song);
         setState(state => ({ ...state, queue: shuffledQueue }));
     }
 
@@ -136,11 +139,19 @@ const Controller = (props) => {
         goToNextSong(false);
     }
 
+    audio.onloadstart = () => {
+        setAudioBuffering(true);
+    }
+
+    audio.oncanplay = () => {
+        setAudioBuffering(false);
+    }
+
     useEffect(() => {
         audio.currentTime = 0;
         pauseAudio();
-        if (song.id !== undefined) {
-            getStreamingUrl(song.id, getStreamQuality()).then(response => {
+        if (song?.id !== undefined) {
+            getStreamingUrl(song?.id, getStreamQuality()).then(response => {
                 if (response.status === 200) {
                     const streamingUrl = response.data.result;
                     if (previousStreamUrl !== streamingUrl) {
@@ -154,9 +165,9 @@ const Controller = (props) => {
         }
     },
         // eslint-disable-next-line 
-        [song.id])
+        [song?.id])
 
-    const albumArt = (song.art !== '') ? song.art : blankAlbumArt;
+    const albumArt = (song?.art !== '') ? song?.art : blankAlbumArt;
 
     const handleChange = (event) => {
         const selectedDuration = event.target.value;
@@ -166,10 +177,10 @@ const Controller = (props) => {
 
     const showLyricsModal = () => {
         setShowLyrics(true)
-        if (song.lyrics !== null) {
-            if (song.lyrics === '') {
+        if (song?.lyrics !== null) {
+            if (song?.lyrics === '') {
                 setSongLyrics('Fetching song lyrics, please wait ...')
-                getSongLyrics(song.id).then(response => {
+                getSongLyrics(song?.id).then(response => {
                     if (response.status === 200) {
                         const lyrics = response.data.result
                         if (lyrics != null) {
@@ -183,8 +194,7 @@ const Controller = (props) => {
                     }
                 })
             } else {
-                console.log(song.lyrics)
-                setSongLyrics(song.lyrics)
+                setSongLyrics(song?.lyrics)
             }
         } else {
             setShowLyrics(false)
@@ -212,6 +222,37 @@ const Controller = (props) => {
                 return repeatOneIcon
             default:
                 return repeatIcon
+        }
+    }
+
+    const getPlayStateDisplay = () => {
+        if (isAudioBuffering) {
+            return <Spinner animation="border" size="sm" variant="warning" />
+        } else {
+            if (props.mobile) {
+                return <img
+                    title={isAudioPlaying ? "Pause" : "Play"}
+                    className="play-button-mobile"
+                    src={isAudioPlaying ? pauseIcon : playIcon}
+                    width="14px"
+                    height="14px"
+                    alt=""
+                    onClick={() => {
+                        (isAudioPlaying) ? pauseAudio() : playAudio();
+                    }}
+                />
+            } else {
+                return <img
+                    title={isAudioPlaying ? "Pause" : "Play"}
+                    src={(isAudioPlaying) ? pauseIcon : playIcon}
+                    width="14px"
+                    height="14px"
+                    alt=""
+                    onClick={() => {
+                        (isAudioPlaying) ? pauseAudio() : playAudio();
+                    }}
+                />
+            }
         }
     }
 
@@ -248,16 +289,7 @@ const Controller = (props) => {
                         }} />
                 </Col>
                 <Col className="text-center">
-                    <img
-                        title={isAudioPlaying ? "Pause" : "Play"}
-                        src={(isAudioPlaying) ? pauseIcon : playIcon}
-                        width="14px"
-                        height="14px"
-                        alt=""
-                        onClick={() => {
-                            (isAudioPlaying) ? pauseAudio() : playAudio();
-                        }}
-                    />
+                    {getPlayStateDisplay()}
                 </Col>
                 <Col className="text-center">
                     <img src={nextIcon}
@@ -302,8 +334,8 @@ const Controller = (props) => {
                         }} />
                 </Col>
             </Row>
-            <p className="song-name pl-3 pt-3 pr-3 pb-1 m-0">{song.name}</p>
-            <p className="artist-name pl-3 pb-3 pr-3 m-0">{song.artist}</p>
+            <p className="song-name pl-3 pt-3 pr-3 pb-1 m-0">{song?.name}</p>
+            <p className="artist-name pl-3 pb-3 pr-3 m-0">{song?.artist}</p>
             {lyricsModal}
         </div>
     );
@@ -322,8 +354,8 @@ const Controller = (props) => {
                 <img className="album-art-mobile" src={albumArt} alt="" />
 
                 <div className="song-details-mobile pt-2 pb-2 pl-3 m-0">
-                    <p className="song-name-mobile p-0 m-0">{song.name}</p>
-                    <p className="artist-name-mobile p-0 m-0">{song.artist}</p>
+                    <p className="song-name-mobile p-0 m-0">{song?.name}</p>
+                    <p className="artist-name-mobile p-0 m-0">{song?.artist}</p>
                 </div>
                 <img
                     title={isAudioPlaying ? "Pause" : "Play"}

@@ -12,7 +12,7 @@ import editIcon from '../assets/pencil.svg';
 import playIcon from '../assets/play-button.svg';
 
 import GlobalState from '../contexts/GlobalState';
-import { isMobile } from '../utils/utils';
+import { isMobile, shufflePlaylist } from '../utils/utils';
 import config from '../config.json';
 
 const SongList = (props) => {
@@ -32,40 +32,44 @@ const SongList = (props) => {
     const callPlay = (song) => {
         let newQueue = [...props.playlist]
         if (state.shuffleOn) {
-            newQueue.sort(() => Math.random() - 0.5);
+            newQueue = shufflePlaylist(newQueue, song);
         }
         setState(state => ({ ...state, currentSong: song, queue: newQueue, originalQueue: props.playlist }))
     }
 
     const data = props.playlist.map(song => {
-        const equalizerAnim = (state.currentSong !== null && state.currentSong.id === song.id) ? equalizerAnimation : playIcon
-        const tags = song.tags.map(tag => {
+        if (song !== null && song !== undefined ) {
+            const equalizerAnim = (state.currentSong !== null && state.currentSong?.id === song?.id) ? equalizerAnimation : playIcon
+            const tags = song?.tags.map(tag => {
+                return (
+                    <Badge key={tag} pill variant="secondary" className="mr-1">{tag}</Badge>
+                )
+            })
+            const classNameRoot = (state.currentSong !== null && state.currentSong?.id === song?.id) ? 'current-song' : ''
+
             return (
-                <Badge key={tag} pill variant="secondary" className="mr-1">{tag}</Badge>
+                <tr key={song.id} className={classNameRoot}>
+                    <td><img title="Play" src={equalizerAnim} height="24px" alt="" onClick={() => callPlay(song)} /></td>
+                    <td>{song.name}</td>
+                    <td>{song.artist}</td>
+                    <td><div>{tags}</div></td>
+                    {!isMobile ? (
+                        <td>
+                            <a title="Watch on YouTube" href={song.url} target="_blank" rel="noreferrer"><img src={youtubeIcon} height="18px" alt="" /></a>
+                            {config.editAccess ? (
+                                <img title="Edit Song" src={editIcon} height="16px" alt="" className="ml-4" onClick={() => props.showEditModal(song)} />
+                            ) : (<div />)}
+                            {config.editAccess ? (
+                                <img title="Delete Song" src={deleteIcon} height="16px" alt="" className="ml-4" onClick={() => deleteTheSong(song.id)} />
+                            ) : (<div />)}
+                        </td>
+                    ) : <p />}
+
+                </tr>
             )
-        })
-        const classNameRoot = (state.currentSong !== null && state.currentSong.id === song.id) ? 'current-song' : ''
-
-        return (
-            <tr key={song.id} className={classNameRoot}>
-                <td><img title="Play" src={equalizerAnim} height="24px" alt="" onClick={() => callPlay(song)} /></td>
-                <td>{song.name}</td>
-                <td>{song.artist}</td>
-                <td><div>{tags}</div></td>
-                {!isMobile ? (
-                    <td>
-                        <a title="Watch on YouTube" href={song.url} target="_blank" rel="noreferrer"><img src={youtubeIcon} height="18px" alt="" /></a>
-                        {config.editAccess ? (
-                            <img title="Edit Song" src={editIcon} height="16px" alt="" className="ml-4" onClick={() => props.showEditModal(song)} />
-                        ) : (<div />)}
-                        {config.editAccess ? (
-                            <img title="Delete Song" src={deleteIcon} height="16px" alt="" className="ml-4" onClick={() => deleteTheSong(song.id)} />
-                        ) : (<div />)}
-                    </td>
-                ) : <p />}
-
-            </tr>
-        )
+        } else {
+            return ''
+        }
     });
 
     if (data != null && data.length > 0) {

@@ -6,10 +6,11 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { isMobile } from '../utils/utils'
 
-import { getStreamQuality, setStreamQuality } from '../utils/storage'
-import { importLibrary } from '../api/manager'
+import { isMobile } from '../utils/utils';
+import { getStreamQuality, setStreamQuality } from '../utils/storage';
+import { importLibrary } from '../api/manager';
+import { editAccess } from '../config.json';
 
 const Settings = (props) => {
 
@@ -106,19 +107,22 @@ const Settings = (props) => {
                 </Row>
             </Card>
 
-            <Card bg="dark" className="p-4 mt-3">
-                <Row>
-                    <Col xs={12} md={10}>
-                        <h6 className="page-headline">Import Library</h6>
-                        <p className="text-light m-0">Import a valid Hope Player JSON playlist file into your library.</p>
-                    </Col>
-                    <Col xs={12} md={2} className={isMobile ? "text-right pt-4" : "text-right"}>
-                        <Button variant="outline-warning" onClick={() => setShowImportModal(true)}>Import</Button>
-                    </Col>
-                </Row>
-            </Card>
+            {editAccess ?
+                <Card bg="dark" className="p-4 mt-3">
+                    <Row>
+                        <Col xs={12} md={10}>
+                            <h6 className="page-headline">Import Library</h6>
+                            <p className="text-light m-0">Import a valid Hope Player JSON playlist file into your library.</p>
+                        </Col>
+                        <Col xs={12} md={2} className={isMobile ? "text-right pt-4" : "text-right"}>
+                            <Button variant="outline-warning" onClick={() => setShowImportModal(true)}>Import</Button>
+                        </Col>
+                    </Row>
+                </Card>
+                : ''
+            }
 
-            {importModal}
+            {editAccess ? importModal : ''}
 
         </div>
     )
