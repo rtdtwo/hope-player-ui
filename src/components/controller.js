@@ -6,6 +6,8 @@ import prevIcon from '../assets/prev.svg';
 import playIcon from '../assets/play.svg';
 import pauseIcon from '../assets/pause.svg';
 import repeatIcon from '../assets/repeat.svg';
+import repeatOneIcon from '../assets/repeat-one.svg';
+import repeatAllIcon from '../assets/repeat-all.svg';
 import shuffleIcon from '../assets/shuffle.svg';
 import shuffleOnIcon from '../assets/shuffle-active.svg';
 import lyricsIcon from '../assets/lyrics.svg';
@@ -19,6 +21,7 @@ import GlobalState from '../contexts/GlobalState';
 import { getStreamingUrl, getSongLyrics } from '../api/manager'
 
 import { getStreamQuality } from '../utils/storage'
+import { REPEAT_MODE } from '../utils/constants'
 
 
 let previousStreamUrl = ''
@@ -46,7 +49,12 @@ const Controller = (props) => {
         setAudioPlaying(true);
     }
 
-    const goToNextSong = () => {
+    const restartAudio = () => {
+        audio.currentTime = 0;
+        playAudio()
+    }
+
+    const getCurrentSongIndex = () => {
         let currentSongIndex = -1
         for (let index = 0; index < state.queue.length; index++) {
             const element = state.queue[index];
@@ -56,24 +64,48 @@ const Controller = (props) => {
             }
         }
 
-        if (currentSongIndex < state.queue.length - 1) {
-            setState(state => ({ ...state, currentSong: state.queue[currentSongIndex + 1] }))
+        return currentSongIndex
+    }
+
+    const goToNextSong = (force) => {
+        const currentSongIndex = getCurrentSongIndex()
+        let nextSongIndex = currentSongIndex;
+        switch (state.repeatMode) {
+            case REPEAT_MODE.NONE:
+                if (currentSongIndex < state.queue.length - 1) {
+                    nextSongIndex++;
+                }
+                break;
+            case REPEAT_MODE.ALL:
+                if (currentSongIndex < state.queue.length - 1) {
+                    nextSongIndex++;
+                } else {
+                    nextSongIndex = 0;
+                }
+                break;
+            case REPEAT_MODE.ONE:
+                if (force && currentSongIndex < state.queue.length - 1) {
+                    nextSongIndex++;
+                } else {
+                    restartAudio()
+                }
+                break;
         }
+
+        setState(state => ({ ...state, currentSong: state.queue[nextSongIndex] }))
+
     }
 
     const goToPreviousSong = () => {
-        let currentSongIndex = 1
-        for (let index = 0; index < state.queue.length; index++) {
-            const element = state.queue[index];
-            if (element.id === song.id) {
-                currentSongIndex = index;
-                break;
-            }
+        const currentSongIndex = getCurrentSongIndex()
+        let previousSongIndex = currentSongIndex;
+        if (currentSongIndex > 0) {
+            previousSongIndex--;
+        } else if (currentSongIndex == 0 && state.repeatMode === 0) {
+            previousSongIndex = state.queue.length - 1
         }
 
-        if (currentSongIndex > 0) {
-            setState(state => ({ ...state, currentSong: state.queue[currentSongIndex - 1] }));
-        }
+        setState(state => ({ ...state, currentSong: state.queue[previousSongIndex] }));
     }
 
     const unshuffleQueue = () => {
@@ -101,7 +133,7 @@ const Controller = (props) => {
     audio.onended = () => {
         audio.currentTime = 0;
         pauseAudio();
-        goToNextSong();
+        goToNextSong(false);
     }
 
     useEffect(() => {
@@ -164,6 +196,25 @@ const Controller = (props) => {
         setState(state => ({ ...state, shuffleOn: !state.shuffleOn }))
     }
 
+    const changeRepeat = () => {
+        let currentRepeat = state.repeatMode;
+        (currentRepeat < REPEAT_MODE.ONE) ? (currentRepeat++) : (currentRepeat = REPEAT_MODE.NONE);
+        setState(state => ({ ...state, repeatMode: currentRepeat }))
+    }
+
+    const getRepeatIcon = () => {
+        switch (state.repeatMode) {
+            case REPEAT_MODE.NONE:
+                return repeatIcon
+            case REPEAT_MODE.ALL:
+                return repeatAllIcon
+            case REPEAT_MODE.ONE:
+                return repeatOneIcon
+            default:
+                return repeatIcon
+        }
+    }
+
     const lyricsModal = <Modal centered show={showLyrics} onHide={() => setShowLyrics(false)}>
         <Modal.Header closeButton>
             <p className="m-0 p-0"><span className="mr-3"><img alt="" src={geniusLogo} width="36px" /></span>Lyrics powered by Genius</p>
@@ -217,17 +268,18 @@ const Controller = (props) => {
                         onClick={() => {
                             audio.currentTime = 0;
                             pauseAudio();
-                            goToNextSong();
+                            goToNextSong(true);
                         }} />
                 </Col>
             </Row>
             <Row className="audio-controls text-center m-0 pt-2">
                 <Col>
-                    <img src={repeatIcon}
+                    <img src={getRepeatIcon()}
                         width="16px"
                         height="16px"
                         alt=""
-                        title="Repeat" />
+                        title="Repeat"
+                        onClick={() => changeRepeat()} />
                 </Col>
                 <Col className="text-center">
                     <img

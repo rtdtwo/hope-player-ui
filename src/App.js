@@ -22,7 +22,8 @@ const App = () => {
     queue: [],
     currentSong: null,
     originalQueue: [],
-    shuffleOn: false
+    shuffleOn: false,
+    repeatMode: -1
   });
 
   const libraryPage = <Library />;
