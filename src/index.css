@@ -60,6 +60,7 @@ body {
 .song-details-mobile {
   height: 64px;
   float: left;
+  width: 50vw;
 }
 
 .song-name {

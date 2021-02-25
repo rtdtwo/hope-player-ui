@@ -168,7 +168,7 @@ const Library = (props) => {
                         }}>Add</Button>
                     </Col>
                     : ""}
-                <Col sm={12} className={isMobile ? "m-0 pl-3 pr-3" : "m-0 p-0"}>
+                <Col sm={12} className="m-0 p-0">
                     {
                         libraryLoading ?
                             <div className="text-center mt-3">

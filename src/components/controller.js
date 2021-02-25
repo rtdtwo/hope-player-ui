@@ -71,45 +71,48 @@ const Controller = (props) => {
     }
 
     const goToNextSong = (force) => {
-        const currentSongIndex = getCurrentSongIndex()
-        let nextSongIndex = currentSongIndex;
-        switch (state.repeatMode) {
-            case REPEAT_MODE.NONE:
-            default:
-                if (currentSongIndex < state.queue.length - 1) {
-                    nextSongIndex++;
-                }
-                break;
-            case REPEAT_MODE.ALL:
-                if (currentSongIndex < state.queue.length - 1) {
-                    nextSongIndex++;
-                } else {
-                    nextSongIndex = 0;
-                }
-                break;
-            case REPEAT_MODE.ONE:
-                if (force && currentSongIndex < state.queue.length - 1) {
-                    nextSongIndex++;
-                } else {
-                    restartAudio()
-                }
-                break;
+        const currentSongIndex = getCurrentSongIndex();
+        if (currentSongIndex !== -1) {
+            let nextSongIndex = currentSongIndex;
+            switch (state.repeatMode) {
+                case REPEAT_MODE.NONE:
+                default:
+                    if (currentSongIndex < state.queue.length - 1) {
+                        nextSongIndex++;
+                    }
+                    break;
+                case REPEAT_MODE.ALL:
+                    if (currentSongIndex < state.queue.length - 1) {
+                        nextSongIndex++;
+                    } else {
+                        nextSongIndex = 0;
+                    }
+                    break;
+                case REPEAT_MODE.ONE:
+                    if (force && currentSongIndex < state.queue.length - 1) {
+                        nextSongIndex++;
+                    } else {
+                        restartAudio()
+                    }
+                    break;
+            }
+
+            setState(state => ({ ...state, currentSong: state.queue[nextSongIndex] }))
         }
-
-        setState(state => ({ ...state, currentSong: state.queue[nextSongIndex] }))
-
     }
 
     const goToPreviousSong = () => {
         const currentSongIndex = getCurrentSongIndex()
-        let previousSongIndex = currentSongIndex;
-        if (currentSongIndex > 0) {
-            previousSongIndex--;
-        } else if (currentSongIndex === 0 && state.repeatMode === 0) {
-            previousSongIndex = state.queue.length - 1
-        }
+        if (currentSongIndex !== -1) {
+            let previousSongIndex = currentSongIndex;
+            if (currentSongIndex > 0) {
+                previousSongIndex--;
+            } else if (currentSongIndex === 0 && state.repeatMode === 0) {
+                previousSongIndex = state.queue.length - 1
+            }
 
-        setState(state => ({ ...state, currentSong: state.queue[previousSongIndex] }));
+            setState(state => ({ ...state, currentSong: state.queue[previousSongIndex] }));
+        }
     }
 
     const unshuffleQueue = () => {
@@ -357,6 +360,7 @@ const Controller = (props) => {
                     <p className="song-name-mobile p-0 m-0">{song?.name}</p>
                     <p className="artist-name-mobile p-0 m-0">{song?.artist}</p>
                 </div>
+
                 <img
                     title={isAudioPlaying ? "Pause" : "Play"}
                     className="play-button-mobile"
@@ -368,7 +372,17 @@ const Controller = (props) => {
                         (isAudioPlaying) ? pauseAudio() : playAudio();
                     }}
                 />
+                <img src={lyricsIcon}
+                    width="16px"
+                    height="16px"
+                    alt=""
+                    className="play-button-mobile"
+                    title="Lyrics"
+                    onClick={() => {
+                        showLyricsModal();
+                    }} />
             </div>
+            {lyricsModal}
         </div>
     );
 
