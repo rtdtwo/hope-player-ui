@@ -1,19 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { isMobile } from '../utils/utils'
 
 import { getStreamQuality, setStreamQuality } from '../utils/storage'
+import { importLibrary } from '../api/manager'
 
 const Settings = (props) => {
+
+    const [showImportModal, setShowImportModal] = useState(false);
+    let importFile = null;
 
     const onQualityChange = (event) => {
         setStreamQuality(event.target.value);
     }
+
+    const onImportFileSelected = (event) => {
+        const files = event.target.files;
+        importFile = files[0];
+    }
+
+    const callImportLibrary = () => {
+        if (importFile != null) {
+            importLibrary(importFile).then(response => {
+                if (response.status === 200) {
+                    alert("Import process complete");
+                    setShowImportModal(false);
+                }
+            })
+        }
+    }
+
+    const importModal = <Modal show={showImportModal} onHide={() => setShowImportModal(false)}>
+        <Modal.Header closeButton>
+            <Modal.Title>Import Library</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <p>Select the JSON file from your device to import songs.</p>
+            <Form.File
+                onChange={onImportFileSelected.bind(this)}
+                id="import-library-file"
+                label="Import File"
+            />
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="warning" onClick={() => callImportLibrary()}>
+                Import</Button>
+        </Modal.Footer>
+    </Modal>
 
     return (
         <div className="m-4">
@@ -74,10 +113,12 @@ const Settings = (props) => {
                         <p className="text-light m-0">Import a valid Hope Player JSON playlist file into your library.</p>
                     </Col>
                     <Col xs={12} md={2} className={isMobile ? "text-right pt-4" : "text-right"}>
-                        <Button variant="outline-warning">Import</Button>
+                        <Button variant="outline-warning" onClick={() => setShowImportModal(true)}>Import</Button>
                     </Col>
                 </Row>
             </Card>
+
+            {importModal}
 
         </div>
     )

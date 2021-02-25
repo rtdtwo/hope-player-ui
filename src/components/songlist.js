@@ -29,6 +29,10 @@ const SongList = (props) => {
         }
     }
 
+    const callPlay = (song) => {
+        setState(state => ({ ...state, currentSong: song, queue: props.playlist, originalQueue: props.playlist }))
+    }
+
     const data = props.playlist.map(song => {
         const equalizerAnim = (state.currentSong !== null && state.currentSong.id === song.id) ? equalizerAnimation : playIcon
         const tags = song.tags.map(tag => {
@@ -40,7 +44,7 @@ const SongList = (props) => {
 
         return (
             <tr key={song.id} className={classNameRoot}>
-                <td><img title="Play" src={equalizerAnim} height="24px" alt="" onClick={() => setState(state => ({ ...state, currentSong: song, queue: props.playlist }))} /></td>
+                <td><img title="Play" src={equalizerAnim} height="24px" alt="" onClick={() => callPlay(song)} /></td>
                 <td>{song.name}</td>
                 <td>{song.artist}</td>
                 <td><div>{tags}</div></td>

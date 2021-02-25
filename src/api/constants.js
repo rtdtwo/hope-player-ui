@@ -10,4 +10,5 @@ export const ENDPOINTS = {
     deleteSong: SERVER_BASE_URL + '/delete',
     editSong: SERVER_BASE_URL + '/edit',
     lyrics: SERVER_BASE_URL + '/lyrics',
+    importLibrary: SERVER_BASE_URL + '/library/import',
 }

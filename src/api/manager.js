@@ -56,3 +56,20 @@ export const getSongLyrics = (songId) => {
         console.log(error);
     }
 }
+
+export const importLibrary = (importFile) => {
+    try {
+        const formData = new FormData();
+        formData.append("file", importFile);
+        return axios.post(
+            ENDPOINTS.importLibrary,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    } catch (error) {
+        console.log(error);
+    }
+}

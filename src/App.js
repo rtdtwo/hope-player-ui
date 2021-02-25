@@ -20,7 +20,8 @@ const App = () => {
 
   const [state, setState] = useState({
     queue: [],
-    currentSong: null
+    currentSong: null,
+    originalQueue: []
   });
 
   const libraryPage = <Library />;

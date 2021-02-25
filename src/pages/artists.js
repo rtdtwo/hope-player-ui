@@ -35,7 +35,7 @@ const Artists = (props) => {
             <Col xs={6} sm={6} md={4} lg={3} xl={2}>
                 <Card bg="dark" className="mt-4">
                     <Card.Img
-                        variant="top" src={serverUrl + artist.imagePath}
+                        variant="top" src={serverUrl + '/artists/image?name=' + artist.name}
                     />
                     <Card.Body>
                         <h6 className="text-light artist-card-name" title={artist.name}>{artist.name}</h6>

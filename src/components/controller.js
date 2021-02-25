@@ -7,12 +7,12 @@ import playIcon from '../assets/play.svg';
 import pauseIcon from '../assets/pause.svg';
 import repeatIcon from '../assets/repeat.svg';
 import shuffleIcon from '../assets/shuffle.svg';
+import shuffleOnIcon from '../assets/shuffle-active.svg';
 import lyricsIcon from '../assets/lyrics.svg';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 
 import GlobalState from '../contexts/GlobalState';
 
@@ -34,6 +34,7 @@ const Controller = (props) => {
     const [isAudioPlaying, setAudioPlaying] = useState(false);
     const [showLyrics, setShowLyrics] = useState(false);
     const [songLyrics, setSongLyrics] = useState(song.lyrics);
+    const [shuffleOn, setShuffleOn] = useState(false);
 
     const pauseAudio = () => {
         audio.pause();
@@ -74,6 +75,16 @@ const Controller = (props) => {
         if (currentSongIndex > 0) {
             setState(state => ({ ...state, currentSong: state.queue[currentSongIndex - 1] }));
         }
+    }
+
+    const unshuffleQueue = () => {
+        setState(state => ({ ...state, queue: state.originalQueue}));
+    }
+
+    const shuffleQueue = () => {
+        let shuffledQueue = [...state.originalQueue];
+        shuffledQueue.sort(() => Math.random() - 0.5);
+        setState(state => ({ ...state, queue: shuffledQueue}));
     }
 
     audio.ontimeupdate = () => {
@@ -149,9 +160,14 @@ const Controller = (props) => {
         }
     }
 
+    const changeShuffle = () => {
+        shuffleOn ? unshuffleQueue() : shuffleQueue()
+        setShuffleOn(!shuffleOn)
+    }
+
     const lyricsModal = <Modal centered show={showLyrics} onHide={() => setShowLyrics(false)}>
         <Modal.Header closeButton>
-            <p className="m-0 p-0"><span className="mr-3"><img src={geniusLogo} width="36px" /></span>Lyrics powered by Genius</p>
+            <p className="m-0 p-0"><span className="mr-3"><img alt="" src={geniusLogo} width="36px" /></span>Lyrics powered by Genius</p>
         </Modal.Header>
         <Modal.Body className="lyric-body">{songLyrics}</Modal.Body>
     </Modal>
@@ -191,7 +207,6 @@ const Controller = (props) => {
                         onClick={() => {
                             (isAudioPlaying) ? pauseAudio() : playAudio();
                         }}
-
                     />
                 </Col>
                 <Col className="text-center">
@@ -207,7 +222,6 @@ const Controller = (props) => {
                         }} />
                 </Col>
             </Row>
-
             <Row className="audio-controls text-center m-0 pt-2">
                 <Col>
                     <img src={repeatIcon}
@@ -219,10 +233,11 @@ const Controller = (props) => {
                 <Col className="text-center">
                     <img
                         title="Shuffle"
-                        src={shuffleIcon}
+                        src={shuffleOn ? shuffleOnIcon : shuffleIcon}
                         width="16px"
                         height="16px"
                         alt=""
+                        onClick={() => changeShuffle()}
                     />
                 </Col>
                 <Col className="text-center">
