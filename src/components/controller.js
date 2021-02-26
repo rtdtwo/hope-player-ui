@@ -86,6 +86,7 @@ const Controller = (props) => {
                         nextSongIndex++;
                     } else {
                         nextSongIndex = 0;
+                        setState(state => ({ ...state, toast: 'Repeating from the beginning' }));
                     }
                     break;
                 case REPEAT_MODE.ONE:
@@ -163,6 +164,8 @@ const Controller = (props) => {
                         playAudio();
                         previousStreamUrl = streamingUrl;
                     }
+                } else {
+                    goToNextSong(true);
                 }
             });
         }

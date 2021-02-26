@@ -32,7 +32,7 @@ const Artists = (props) => {
 
     const artistList = artists.map(artist => {
         return (
-            <Col xs={6} sm={6} md={4} lg={3} xl={2}>
+            <Col xs={6} sm={6} md={4} lg={3} xl={2} key={artist.name}>
                 <Card bg="dark" className="mt-4">
                     <Card.Img
                         variant="top" src={serverUrl + '/artists/image?name=' + artist.name}

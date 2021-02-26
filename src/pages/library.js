@@ -3,7 +3,6 @@ import SongList from '../components/songlist';
 import { getLibrary } from '../api/manager';
 import { addToLibrary, editSong } from '../api/manager'
 import config from '../config.json'
-import { isMobile } from '../utils/utils'
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
