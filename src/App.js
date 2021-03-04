@@ -5,7 +5,6 @@ import GlobalState from './contexts/GlobalState'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Toast from 'react-bootstrap/Toast';
 
 import { isMobile } from './utils/utils';
 import Sidebar from './components/sidebar';
@@ -24,8 +23,7 @@ const App = () => {
     currentSong: null,
     originalQueue: [],
     shuffleOn: false,
-    repeatMode: -1,
-    toast: ''
+    repeatMode: -1
   });
 
   const libraryPage = <Library />;
@@ -61,18 +59,6 @@ const App = () => {
         break;
     };
   };
-
-  const hideToast = () => {
-    setState(state => ({ ...state, toast: '' }))
-  }
-
-  const toast = <Toast
-    onClose={() => hideToast()}
-    show={state.toast === '' ? false : true}
-    delay={3000}
-    autohide>
-    <Toast.Body>{state.toast}</Toast.Body>
-  </Toast>
 
   const mobilePageStyle = {
     height: window.innerHeight - 64 - 64,
