@@ -1,63 +1,22 @@
-import React, { Component } from 'react';
-import Controller from './controller'
-import logo from '../assets/logo.svg'
+import React from 'react';
+import logo from '../assets/logo-light.svg';
+import { PAGES } from '../utils/MenuProvider'
 
-const menuItems = ["Library", "Artists", "Settings", "About"];
+const Sidebar = (props) => {
+    const menu = PAGES.map(page => {
+        const isActive = props.currentPage === page;
+        return <div className={isActive ? "menu-item menu-item-active" : "menu-item"} onClick={() => props.setCurrentPage(page)}>
+            <img className="menu-icon" src={isActive ? page.iconActive : page.icon} />
+            <p className="menu-label">{page.label}</p>
+        </div>
+    })
 
-class Sidebar extends Component {
-    state = {
-        menu: []
-    }
-
-    componentDidMount() {
-        this.changeMenu(0);
-    }
-
-    changeMenu = (selectedMenuItem) => {
-        this.setState({
-            selectedMenuItem: selectedMenuItem,
-            menu: this.generateMenu(selectedMenuItem)
-        })
-    }
-
-    generateMenu = (selectedMenuItem) => {
-        return menuItems.map((item) => {
-            const index = menuItems.indexOf(item)
-            let className = "ml-3 mr-3 mt-4 mb-4";
-            if (index === selectedMenuItem) {
-                className += " menu-active";
-            } else {
-                className += " menu-inactive";
-            }
-
-            return (
-                <p
-                    className={className}
-                    key={item}
-                    onClick={() => {
-                        this.changeMenu(index)
-                        this.props.changeScreen(index)
-                    }}>
-                    {item}
-                </p>
-            );
-        })
-    }
-
-
-    render() {
-        return (
-            <div className="sidebar">
-                <img src={logo} className="logo ml-3 mt-3 mr-3" alt="" />
-
-                {this.state.menu}
-
-                <div className="align_bottom">
-                    <Controller />
-                </div>
-            </div>
-        )
-    }
+    return (
+        <div>
+            <img src={logo} className="logo mb-2" alt="" />
+            {menu}
+        </div>
+    );
 }
 
 export default Sidebar;
