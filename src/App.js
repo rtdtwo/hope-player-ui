@@ -4,6 +4,7 @@ import GlobalState from './contexts/GlobalState'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Root from './components/Root';
+import { REPEAT_MODE } from './utils/constants'
 
 const App = () => {
 
@@ -12,7 +13,7 @@ const App = () => {
     currentSong: null,
     originalQueue: [],
     shuffleOn: false,
-    repeatMode: -1
+    repeatMode: REPEAT_MODE.NONE
   });
 
   return (

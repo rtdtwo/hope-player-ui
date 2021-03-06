@@ -32,9 +32,9 @@ const Home = () => {
         []);
 
     return (
-        <Row className="page-root m-0">
+        <Row className="page-root m-0 lp-30 rp-30 tp-40">
             <Col className="library-container p-0 m-0 pr-5" md={6}>
-                <h3 className="page-headline mb-3">Your Library</h3>
+                <h3 className="page-headline mb-3 lm-10">Your Library</h3>
                 <div className="song-list-container">
                     <SongList playlist={library}/>
                 </div>

@@ -70,17 +70,17 @@ body {
 }
 
 .page-root {
-    padding-left: 40px !important;
-    padding-right: 40px !important;
-    padding-top: 40px !important;
     height: 100%;
     width: 100%;
 }
 
 .controller-song-title {
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 40px;
     padding: 0;
-    width: calc(100% - 68px);
+    width: calc(100% - 68px - 40px);
     display: block;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -93,7 +93,10 @@ body {
 }
 
 .controller-song-artist {
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 40px;
     padding: 0;
     color: white;
     display: block;
@@ -101,7 +104,7 @@ body {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    width: calc(100% - 68px);
+    width: calc(100% - 68px - 40px);
     font-size: 14px;
     font-family: 'Quicksand', sans-serif;
     font-weight: 400;
@@ -131,6 +134,38 @@ body {
     font-size: 18px;
 }
 
+.rm-20 {
+    margin-right: 20px;
+}
+
+.lm-20 {
+    margin-left: 20px;
+}
+
+.lm-10 {
+    margin-left: 10px;
+}
+
+.tp-30 {
+    padding-left: 30px !important;
+}
+
+.lp-30 {
+    padding-left: 30px !important;
+}
+
+.tp-30 {
+    padding-top: 30px !important;
+}
+
+.rp-30 {
+    padding-right: 30px !important;
+}
+
+.tp-40 {
+    padding-top: 40px !important;
+}
+
 .song-listing-artist {
     margin: 0;
     padding: 0;
@@ -156,8 +191,22 @@ body {
 }
 
 .song-listing {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    position: relative;
+    float: left;
+    width: 100%;
+}
+
+.song-listing-active {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 64px;
+    background-color: #00000030;
     position: relative;
     float: left;
     width: 100%;
@@ -208,7 +257,7 @@ body {
 .controller-time {
     float: left;
     font-size: 16px;
-    font-family: 'Quicksand', sans-serif;
+    font-family: monospace;
     font-weight: 400;
     color: white;
 }
@@ -268,6 +317,12 @@ body {
     margin-bottom: auto;
 }
 
+.lyric-body {
+    white-space: pre-wrap;
+    height: 60vh;
+    overflow-y: auto;
+  }
+
 /* RANGE SEEKBAR STYLES */
 
 /*Chrome*/
@@ -277,12 +332,14 @@ body {
       -webkit-appearance: none;
       background-color: #15245C;
       border-radius: 4px;
+      cursor: pointer;
     }
     
     input[type='range']::-webkit-slider-runnable-track {
       height: 8px;
       -webkit-appearance: none;
       color: #FFA600;
+      cursor: pointer;
       border-radius: 4px;
     }
     
@@ -292,8 +349,9 @@ body {
       -webkit-appearance: none;
       cursor: ew-resize;
       background: #FFA600;
+      cursor: pointer;
       border-radius: 4px;
-      box-shadow: -100% 0 0 100% #43e5f7;
+      box-shadow: -100vw 0 0 100vw #FFA600;
     }
 
 }

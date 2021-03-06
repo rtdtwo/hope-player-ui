@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import Sidebar from './Sidebar';
 import { PAGES } from '../utils/MenuProvider';
-import Home from '../pages/Home';
 import Controller from './Controller';
 
 const Root = () => {
