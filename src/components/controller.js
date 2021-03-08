@@ -243,8 +243,8 @@ const Controller = (props) => {
                 <Col className="p-0 m-0" md={2}>
                     <div className="controller-song-details">
                         <Image src={albumArt} roundedCircle className="controller-song-art" />
-                        <p className="controller-song-title">{song.name}</p>
-                        <p className="controller-song-artist">{song.artist}</p>
+                        <p className="controller-song-title" title={song.name}>{song.name}</p>
+                        <p className="controller-song-artist" title={song.artist}>{song.artist}</p>
                     </div>
                 </Col>
                 <Col className="p-0 m-0" md="auto">

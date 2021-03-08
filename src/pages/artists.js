@@ -33,8 +33,8 @@ const Artists = () => {
 
     return (
         <div className="page-root artists-container">
-            <h3 className="page-headline mb-0 lm-40 tm-40 rm-40 bottom-border">Artists</h3>
-            <Row className="m-0 artists-list-container">
+            <h3 className="page-headline mt-5 ml-5 mr-5 mb-0 bottom-border">Artists</h3>
+            <Row className="m-0 p-4 artists-list-container">
                 {getArtistList()}
             </Row>
         </div>

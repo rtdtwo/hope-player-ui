@@ -14,7 +14,7 @@ const AudioQuality = (props) => {
     }
 
     return (
-        <Row className="p-0 m-0">
+        <Row className="pl-5 pr-5 pt-5 m-0">
             <Col xs={12} md={10} className="p-0 m-0">
                 <h5 className="bold-text">Audio Quality</h5>
                 <p className="text-light m-0">Setting a lower quality conserves data, but offers inferior listening experience.</p>

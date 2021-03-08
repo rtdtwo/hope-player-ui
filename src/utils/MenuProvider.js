@@ -1,5 +1,5 @@
-import HomeIcon from '../assets/home.svg';
-import HomeActiveIcon from '../assets/home-active.svg';
+import LibraryIcon from '../assets/library.svg';
+import LibraryActiveIcon from '../assets/library-active.svg';
 import LikeIcon from '../assets/like.svg';
 import LikeActiveIcon from '../assets/like-active.svg';
 import ArtistIcon from '../assets/artist.svg';
@@ -11,25 +11,26 @@ import SettingsActiveIcon from '../assets/settings-active.svg';
 import AboutIcon from '../assets/info.svg';
 import AboutActiveIcon from '../assets/info-active.svg';
 
-import HomePage from '../pages/Home'
+import LibraryPage from '../pages/Library'
 import ArtistsPage from '../pages/Artists';
 import AboutPage from '../pages/About';
 import SettingsPage from '../pages/Settings';
+import UnderConstructionPage from '../pages/UnderConstruction';
 
 export const PAGES = [
     {
-        label: 'Home',
+        label: 'Library',
         index: 0,
-        icon: HomeIcon,
-        iconActive: HomeActiveIcon,
-        page: <HomePage />
+        icon: LibraryIcon,
+        iconActive: LibraryActiveIcon,
+        page: <LibraryPage />
     },
     {
         label: 'Liked',
         index: 1,
         icon: LikeIcon,
         iconActive: LikeActiveIcon,
-        page: null
+        page: <UnderConstructionPage />
     },
     {
         label: 'Artists',
@@ -43,7 +44,7 @@ export const PAGES = [
         index: 3,
         icon: PlaylistIcon,
         iconActive: PlaylistActiveIcon,
-        page: null
+        page: <UnderConstructionPage />
     },
     {
         label: 'Settings',

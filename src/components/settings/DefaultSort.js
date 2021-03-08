@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 const DefaultSort = (props) => {
 
     return (
-        <Row className="p-0 ml-0 mr-0 tm-40">
+        <Row className="pl-5 pr-5 pt-5 m-0">
             <Col xs={12} md={10} className="p-0 m-0">
                 <h5 className="bold-text">Default Library Sort</h5>
                 <p className="text-light m-0">Control how you wish to see your music ordered.</p>

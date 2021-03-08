@@ -126,7 +126,7 @@ body {
 .song-listing-title {
     margin: 0;
     padding: 0;
-    width: 50%;
+    width: 100%;
     display: block;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -135,70 +135,6 @@ body {
     font-weight: 700;
     color: white;
     font-size: 18px;
-}
-
-.page-margin-40 {
-    margin-left: 40px;
-    margin-right: 40px;
-    margin-top: 40px;
-}
-
-.page-padding-40 {
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-top: 40px;
-}
-
-.rm-20 {
-    margin-right: 20px;
-}
-
-.rm-40 {
-    margin-right: 40px;
-}
-
-.lm-40 {
-    margin-left: 40px;
-}
-
-.lm-20 {
-    margin-left: 20px;
-}
-
-.lm-10 {
-    margin-left: 10px;
-}
-
-.tm-40 {
-    margin-top: 40px;
-}
-
-.bm-20 {
-    margin-bottom: 20px;
-}
-
-.tp-30 {
-    padding-left: 30px !important;
-}
-
-.lp-30 {
-    padding-left: 30px !important;
-}
-
-.tp-30 {
-    padding-top: 30px !important;
-}
-
-.rp-40 {
-    padding-right: 40px !important;
-}
-
-.lp-40 {
-    padding-left: 40px !important;
-}
-
-.tp-40 {
-    padding-top: 40px !important;
 }
 
 .song-listing-artist {
@@ -216,11 +152,7 @@ body {
 }
 
 .song-listing-art {
-    float: left;
     object-fit: cover;
-    margin: 0;
-    padding: 0;
-    margin-right: 20px;
     width: 48px;
     height: 48px;
 }
@@ -328,16 +260,12 @@ body {
 }
 
 .artists-list-container {
-    padding-left: 24px;
-    padding-right: 24px;
-    padding-bottom: 24px;
     flex-grow : 1;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
 .settings-list-container {
-    padding: 40px;
     flex-grow : 1;
     overflow-x: hidden;
     overflow-y: auto;

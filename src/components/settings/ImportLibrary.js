@@ -50,7 +50,7 @@ const ImportLibrary = (props) => {
 
     return (
         <div>
-            <Row className="p-0 ml-0 mr-0 tm-40">
+            <Row className="pl-5 pr-5 pt-5 m-0">
                 <Col xs={12} md={10} className="p-0 m-0">
                 <h5 className="bold-text">Import Library</h5>
                     <p className="text-light m-0">Import a valid Hope Player JSON playlist file into your library.</p>
