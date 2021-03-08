@@ -15,6 +15,9 @@ import RepeatAllIcon from '../assets/repeat-all.svg';
 import RepeatOneIcon from '../assets/repeat-one.svg';
 import LyricsIcon from '../assets/lyrics.svg';
 import GeniusLogo from '../assets/genius-logo.jpg';
+import YoutubeIcon from '../assets/youtube.svg';
+import LikeIcon from '../assets/like.svg';
+import LikeActiveIcon from '../assets/like-active.svg';
 
 import { REPEAT_MODE } from '../utils/constants';
 import { shufflePlaylist, toHHMMSS } from '../utils/utils';
@@ -237,7 +240,7 @@ const Controller = (props) => {
     return (
         <div className="controls">
             <Row className="m-0">
-                <Col className="p-0 m-0" md={3}>
+                <Col className="p-0 m-0" md={2}>
                     <div className="controller-song-details">
                         <Image src={albumArt} roundedCircle className="controller-song-art" />
                         <p className="controller-song-title">{song.name}</p>
@@ -246,13 +249,11 @@ const Controller = (props) => {
                 </Col>
                 <Col className="p-0 m-0" md="auto">
                     <div className="controller-controls-container">
-                        <img src={state.shuffleOn ? ShuffleOnIcon : ShuffleIcon} width="16px" height="16px" className="mr-3 controller-icon" onClick={() => changeShuffle()} />
                         <img src={PrevIcon} width="16px" height="16px" className="mr-3 controller-icon" onClick={() => goToPreviousSong()} />
                         <div className="controller-play controller-icon" onClick={() => isPlaying ? pauseAudio() : playAudio()}>
                             <img src={isPlaying ? PauseIcon : PlayIcon} width="16px" height="16px" className="controller-play-icon" />
                         </div>
                         <img src={NextIcon} width="16px" height="16px" className="ml-3 controller-icon" onClick={() => goToNextSong(true)} />
-                        <img src={getRepeatIcon()} width="16px" height="16px" className="ml-3 controller-icon" onClick={() => changeRepeat()} />
                     </div>
                 </Col>
                 <Col className="p-0 m-0">
@@ -270,6 +271,10 @@ const Controller = (props) => {
                 </Col>
                 <Col className="p-0 m-0" md="auto">
                     <div className="controller-options-container">
+                        <img src={state.shuffleOn ? ShuffleOnIcon : ShuffleIcon} width="16px" height="16px" className="mr-4 controller-icon" onClick={() => changeShuffle()} />
+                        <img src={getRepeatIcon()} width="16px" height="16px" className="mr-4 controller-icon" onClick={() => changeRepeat()} />
+                        <img src={song.liked ? LikeActiveIcon : LikeIcon} width="16px" height="16px" className="mr-5 controller-icon" />
+                        <img src={YoutubeIcon} width="16px" height="16px" className="mr-3 controller-icon" />
                         <img src={LyricsIcon} width="16px" height="16px" className="controller-icon" onClick={() => showLyricsModal()} />
                     </div>
                 </Col>

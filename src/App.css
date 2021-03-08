@@ -67,6 +67,7 @@ body {
     font-family: 'Quicksand', sans-serif;
     font-weight: 700;
     color: white;
+    cursor: default;
 }
 
 .page-root {
@@ -90,12 +91,14 @@ body {
     float: left;
     color: white;
     font-size: 18px;
+    cursor: default;
 }
 
 .controller-song-artist {
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0;
+    cursor: default;
     margin-right: 40px;
     padding: 0;
     color: white;
@@ -134,8 +137,28 @@ body {
     font-size: 18px;
 }
 
+.page-margin-40 {
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 40px;
+}
+
+.page-padding-40 {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 40px;
+}
+
 .rm-20 {
     margin-right: 20px;
+}
+
+.rm-40 {
+    margin-right: 40px;
+}
+
+.lm-40 {
+    margin-left: 40px;
 }
 
 .lm-20 {
@@ -144,6 +167,14 @@ body {
 
 .lm-10 {
     margin-left: 10px;
+}
+
+.tm-40 {
+    margin-top: 40px;
+}
+
+.bm-20 {
+    margin-bottom: 20px;
 }
 
 .tp-30 {
@@ -158,8 +189,12 @@ body {
     padding-top: 30px !important;
 }
 
-.rp-30 {
-    padding-right: 30px !important;
+.rp-40 {
+    padding-right: 40px !important;
+}
+
+.lp-40 {
+    padding-left: 40px !important;
 }
 
 .tp-40 {
@@ -198,6 +233,7 @@ body {
     position: relative;
     float: left;
     width: 100%;
+    cursor: pointer;
 }
 
 .song-listing-active {
@@ -210,6 +246,7 @@ body {
     position: relative;
     float: left;
     width: 100%;
+    cursor: pointer;
 }
 
 .controller-song-details {
@@ -260,6 +297,7 @@ body {
     font-family: monospace;
     font-weight: 400;
     color: white;
+    cursor: default;
 }
 
 .seekbar {
@@ -267,13 +305,61 @@ body {
 }
 
 .controller-icon {
+    cursor: pointer;
     float: left;
+}
+
+.artists-container {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.settings-container {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
 }
 
 .library-container {
     display: flex;
     flex-flow: column;
     height: 100%;
+}
+
+.artists-list-container {
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 24px;
+    flex-grow : 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.settings-list-container {
+    padding: 40px;
+    flex-grow : 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.flex-fill {
+    flex-grow : 1;
+}
+
+.pointer-cursor {
+    cursor: pointer;
+}
+
+.library-headline-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.bottom-border {
+    border-bottom: 2px solid #00000020;
+    padding-bottom: 20px;
 }
 
 .song-list-container {
@@ -301,6 +387,7 @@ body {
     font-family: 'Quicksand', sans-serif;
     font-weight: 700;
     position: relative;
+    cursor: pointer;
 }
 
 .menu-icon {
@@ -372,4 +459,54 @@ input[type="range"]::-ms-fill-lower {
 input[type="range"]::-ms-fill-upper {  
   background-color: #15245C;
   border-radius: 4px;
+}
+
+/** HYPERLINK COLORS */
+
+a:link {
+    color: orange;
+}
+a:visited {
+    color: #FFA600;
+}
+a:hover {
+    color: #EE9500;
+}
+a:active {
+    color: #EE9500;
+}
+
+.artist-list-image {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.artist-list-name {
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+}
+
+.artist-list-item {
+    cursor: pointer;
+}
+
+.regular-text {
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 400;
+}
+
+.bold-text {
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+}
+
+.about-container {
+    text-align: justify;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

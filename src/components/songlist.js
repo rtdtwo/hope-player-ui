@@ -30,7 +30,7 @@ const SongList = (props) => {
     });
 
     return (
-        <div className="rm-20">
+        <div className="mr-4 mt-3">
             {playlist}
         </div>
     );

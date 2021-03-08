@@ -12,6 +12,9 @@ import AboutIcon from '../assets/info.svg';
 import AboutActiveIcon from '../assets/info-active.svg';
 
 import HomePage from '../pages/Home'
+import ArtistsPage from '../pages/Artists';
+import AboutPage from '../pages/About';
+import SettingsPage from '../pages/Settings';
 
 export const PAGES = [
     {
@@ -33,7 +36,7 @@ export const PAGES = [
         index: 2,
         icon: ArtistIcon,
         iconActive: ArtistActiveIcon,
-        page: null
+        page: <ArtistsPage />
     },
     {
         label: 'Playlists',
@@ -47,13 +50,13 @@ export const PAGES = [
         index: 4,
         icon: SettingsIcon,
         iconActive: SettingsActiveIcon,
-        page: null
+        page: <SettingsPage />
     },
     {
         label: 'About',
         index: 5,
         icon: AboutIcon,
         iconActive: AboutActiveIcon,
-        page: null
+        page: <AboutPage />
     }
 ]
