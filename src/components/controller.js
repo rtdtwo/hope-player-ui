@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import GlobalState from '../contexts/GlobalState';
 
-import { Col, Image, Row, Modal } from 'react-bootstrap';
+import { Col, Image, Row } from 'react-bootstrap';
 
 import AlbumArtBlank from '../assets/album_art_blank.jpg';
 import PlayIcon from '../assets/play.svg';
@@ -14,14 +14,15 @@ import RepeatIcon from '../assets/repeat.svg';
 import RepeatAllIcon from '../assets/repeat-all.svg';
 import RepeatOneIcon from '../assets/repeat-one.svg';
 import LyricsIcon from '../assets/lyrics.svg';
-import GeniusLogo from '../assets/genius-logo.jpg';
 import YoutubeIcon from '../assets/youtube.svg';
 import LikeIcon from '../assets/like.svg';
 import LikeActiveIcon from '../assets/like-active.svg';
 
+import LyricsModal from '../components/LyricsModal';
+
 import { REPEAT_MODE } from '../utils/constants';
 import { shufflePlaylist, toHHMMSS } from '../utils/utils';
-import { getStreamingUrl, getSongLyrics } from '../api/manager';
+import { getStreamingUrl } from '../api/manager';
 import { getStreamQuality } from '../utils/storage';
 
 let previousStreamUrl = ''
@@ -38,7 +39,6 @@ const Controller = (props) => {
     const [isPlaying, setPlaying] = useState(false);
     const [isBuffering, setBuffering] = useState(false);
     const [showLyrics, setShowLyrics] = useState(false);
-    const [songLyrics, setSongLyrics] = useState(song?.lyrics);
 
     const pauseAudio = () => {
         audio.pause();
@@ -148,6 +148,9 @@ const Controller = (props) => {
                 return RepeatAllIcon;
             case REPEAT_MODE.ONE:
                 return RepeatOneIcon
+            default:
+                return RepeatIcon;
+
         }
     }
 
@@ -178,11 +181,11 @@ const Controller = (props) => {
         setDuration(audio.duration);
     }
 
-
     useEffect(() => {
         audio.currentTime = 0;
         pauseAudio();
         if (song?.id !== undefined) {
+            setBuffering(true);
             getStreamingUrl(song?.id, getStreamQuality()).then(response => {
                 if (response.status === 200) {
                     const streamingUrl = response.data.result;
@@ -202,38 +205,8 @@ const Controller = (props) => {
         [song?.id])
 
     const showLyricsModal = () => {
-        setShowLyrics(true)
-        if (song?.lyrics !== null) {
-            if (song?.lyrics === '') {
-                setSongLyrics('Fetching song lyrics, please wait ...')
-                getSongLyrics(song?.id).then(response => {
-                    if (response.status === 200) {
-                        const lyrics = response.data.result
-                        if (lyrics != null) {
-                            setSongLyrics(lyrics)
-                        } else {
-                            setSongLyrics('Song lyrics unavailable.')
-                        }
-                        song.lyrics = lyrics
-                    } else {
-                        setSongLyrics('Song lyrics unavailable. Please try later.')
-                    }
-                })
-            } else {
-                setSongLyrics(song?.lyrics)
-            }
-        } else {
-            setShowLyrics(false)
-        }
+        setShowLyrics(song?.lyrics !== null)
     }
-
-
-    const lyricsModal = <Modal centered show={showLyrics} onHide={() => setShowLyrics(false)}>
-        <Modal.Header closeButton>
-            <p className="m-0 p-0"><span className="mr-3"><img alt="" src={GeniusLogo} width="36px" /></span>Lyrics powered by Genius</p>
-        </Modal.Header>
-        <Modal.Body className="lyric-body">{songLyrics}</Modal.Body>
-    </Modal>
 
     const albumArt = (song?.art !== '') ? song?.art : AlbumArtBlank;
 
@@ -242,18 +215,18 @@ const Controller = (props) => {
             <Row className="m-0">
                 <Col className="p-0 m-0" md={2}>
                     <div className="controller-song-details">
-                        <Image src={albumArt} roundedCircle className="controller-song-art" />
+                        <Image alt="" src={albumArt} roundedCircle className="controller-song-art" />
                         <p className="controller-song-title" title={song.name}>{song.name}</p>
                         <p className="controller-song-artist" title={song.artist}>{song.artist}</p>
                     </div>
                 </Col>
                 <Col className="p-0 m-0" md="auto">
                     <div className="controller-controls-container">
-                        <img src={PrevIcon} width="16px" height="16px" className="mr-3 controller-icon" onClick={() => goToPreviousSong()} />
+                        <img alt=""  src={PrevIcon} width="16px" height="16px" className="mr-3 controller-icon" onClick={() => goToPreviousSong()} />
                         <div className="controller-play controller-icon" onClick={() => isPlaying ? pauseAudio() : playAudio()}>
-                            <img src={isPlaying ? PauseIcon : PlayIcon} width="16px" height="16px" className="controller-play-icon" />
+                            <img alt="" src={isPlaying ? PauseIcon : PlayIcon} width="16px" height="16px" className="controller-play-icon" />
                         </div>
-                        <img src={NextIcon} width="16px" height="16px" className="ml-3 controller-icon" onClick={() => goToNextSong(true)} />
+                        <img alt=""  src={NextIcon} width="16px" height="16px" className="ml-3 controller-icon" onClick={() => goToNextSong(true)} />
                     </div>
                 </Col>
                 <Col className="p-0 m-0">
@@ -271,15 +244,22 @@ const Controller = (props) => {
                 </Col>
                 <Col className="p-0 m-0" md="auto">
                     <div className="controller-options-container">
-                        <img src={state.shuffleOn ? ShuffleOnIcon : ShuffleIcon} width="16px" height="16px" className="mr-4 controller-icon" onClick={() => changeShuffle()} />
-                        <img src={getRepeatIcon()} width="16px" height="16px" className="mr-4 controller-icon" onClick={() => changeRepeat()} />
-                        <img src={song.liked ? LikeActiveIcon : LikeIcon} width="16px" height="16px" className="mr-5 controller-icon" />
-                        <img src={YoutubeIcon} width="16px" height="16px" className="mr-3 controller-icon" />
-                        <img src={LyricsIcon} width="16px" height="16px" className="controller-icon" onClick={() => showLyricsModal()} />
+                        <img alt="" src={state.shuffleOn ? ShuffleOnIcon : ShuffleIcon} width="16px" height="16px" className="mr-4 controller-icon" onClick={() => changeShuffle()} />
+                        <img alt="" src={getRepeatIcon()} width="16px" height="16px" className="mr-4 controller-icon" onClick={() => changeRepeat()} />
+                        <img alt="" src={song.liked ? LikeActiveIcon : LikeIcon} width="16px" height="16px" className="mr-5 controller-icon" />
+                        <a href={song.url} target="_blank" rel="noreferrer">
+                            <img alt="" src={YoutubeIcon} width="16px" height="16px" className="mr-3 controller-icon" />
+                        </a>
+                        <img alt="" src={LyricsIcon} width="16px" height="16px" className="controller-icon" onClick={() => showLyricsModal()} />
                     </div>
                 </Col>
             </Row>
-            {lyricsModal}
+
+            <LyricsModal
+                song={song}
+                showLyrics={showLyrics}
+                setShowLyrics={setShowLyrics} />
+
         </div>
     );
 }

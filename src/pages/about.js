@@ -6,7 +6,7 @@ const About = () => {
     return (
         <div className="page-root about-container p-5">
             <h1 className="bold-text mb-4">An open music experience!</h1>
-            <p className="regular-text"><img src={Logo} height="20px" /> is a music player built using <a rel="noreferrer" href="https://github.com/facebook/react/" target="_blank">React.js</a> that lets you play YouTube videos as streaming audio.</p>
+            <p className="regular-text"><img alt="" src={Logo} height="20px" /> is a music player built using <a rel="noreferrer" href="https://github.com/facebook/react/" target="_blank">React.js</a> that lets you play YouTube videos as streaming audio.</p>
             <br />
             <p className="regular-text">👨🏽‍💻 with ❤️ by <a rel="noreferrer" href="https://github.com/tatirajurishabh" target="_blank">Rishabh Tatiraju</a> | <a rel="noreferrer" href="https://github.com/tatirajurishabh/hope-player-ui" target="_blank">Source Code</a></p>
             <br />

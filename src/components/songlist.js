@@ -31,7 +31,7 @@ const SongList = (props) => {
             <Col md="auto" className="p-0 m-0 align-self-center">
                 <div>
                     {song.tags.map(tag => {
-                        return <Badge variant="dark" className="mr-2">{tag}</Badge>
+                        return <Badge variant="dark" className="mr-2" key={tag}>{tag}</Badge>
                     })}
                 </div>
             </Col>
