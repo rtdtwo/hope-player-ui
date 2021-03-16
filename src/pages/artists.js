@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Image, Row } from 'react-bootstrap';
 import { getArtists } from '../api/manager';
-import { serverUrl } from '../config.json'
+import { serverUrl } from '../utils/EnvProvider';
 
 
 const Artists = () => {
@@ -25,7 +25,7 @@ const Artists = () => {
     const getArtistList = () => {
         return artists.map(artist => {
             return <Col md={3} lg={2} key={artist.name} className="p-3 m-0 artist-list-item">
-                <Image roundedCircle src={serverUrl + '/artists/image?name=' + artist.name} className="artist-list-image" />
+                <Image roundedCircle src={serverUrl() + '/artists/image?name=' + artist.name} className="artist-list-image" />
                 <p className="m-0 p-0 text-center artist-list-name">{artist.name}</p>
             </Col>
         })

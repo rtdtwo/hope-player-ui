@@ -1,6 +1,6 @@
-import config from '../config.json'
+import { serverUrl } from '../utils/EnvProvider';
 
-const SERVER_BASE_URL = config.serverUrl;
+const SERVER_BASE_URL = serverUrl();
 
 export const ENDPOINTS = {
     library: SERVER_BASE_URL + "/library",

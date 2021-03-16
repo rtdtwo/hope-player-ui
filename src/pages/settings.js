@@ -1,9 +1,9 @@
 import React from 'react';
-import { editAccess } from '../config.json';
 import AudioQuality from '../components/settings/AudioQuality';
 import DefaultSort from '../components/settings/DefaultSort';
 import ExportLibrary from '../components/settings/ExportLibrary';
 import ImportLibrary from '../components/settings/ImportLibrary';
+import { editAccess } from '../utils/EnvProvider';
 
 
 const Settings = () => {
@@ -17,7 +17,7 @@ const Settings = () => {
 
                 <ExportLibrary />
 
-                {editAccess ? <ImportLibrary /> : ''}
+                {editAccess() ? <ImportLibrary /> : ''}
             </div>
         </div>
     );

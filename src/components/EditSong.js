@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { blankSong } from '../utils/constants';
 import { editSong } from '../api/manager';
 
 const EditSong = (props) => {
-    const [addOrEditSongDetails, setAddOrEditSongDetails] = useState(blankSong);
+    const [addOrEditSongDetails, setAddOrEditSongDetails] = useState(props.song);
 
     const callEditSong = () => {
         if (addOrEditSongDetails.name === "" || addOrEditSongDetails.artist === "") {
