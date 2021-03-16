@@ -1,30 +1,29 @@
-import React, { useState, useContext, useEffect } from 'react';
-import blankAlbumArt from '../assets/album_art_blank.jpg';
-import geniusLogo from '../assets/genius-logo.jpg';
-import nextIcon from '../assets/next.svg';
-import prevIcon from '../assets/prev.svg';
-import playIcon from '../assets/play.svg';
-import pauseIcon from '../assets/pause.svg';
-import repeatIcon from '../assets/repeat.svg';
-import repeatOneIcon from '../assets/repeat-one.svg';
-import repeatAllIcon from '../assets/repeat-all.svg';
-import shuffleIcon from '../assets/shuffle.svg';
-import shuffleOnIcon from '../assets/shuffle-active.svg';
-import lyricsIcon from '../assets/lyrics.svg';
-
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Modal from 'react-bootstrap/Modal';
-import Spinner from 'react-bootstrap/Spinner';
-
+import React, { useContext, useState, useEffect } from 'react';
 import GlobalState from '../contexts/GlobalState';
 
-import { getStreamingUrl, getSongLyrics } from '../api/manager';
+import { Col, Image, Row } from 'react-bootstrap';
 
-import { getStreamQuality } from '../utils/storage';
+import AlbumArtBlank from '../assets/album_art_blank.jpg';
+import PlayIcon from '../assets/play.svg';
+import PauseIcon from '../assets/pause.svg';
+import NextIcon from '../assets/next.svg';
+import PrevIcon from '../assets/prev.svg';
+import ShuffleIcon from '../assets/shuffle.svg';
+import ShuffleOnIcon from '../assets/shuffle-active.svg';
+import RepeatIcon from '../assets/repeat.svg';
+import RepeatAllIcon from '../assets/repeat-all.svg';
+import RepeatOneIcon from '../assets/repeat-one.svg';
+import LyricsIcon from '../assets/lyrics.svg';
+import YoutubeIcon from '../assets/youtube.svg';
+import LikeIcon from '../assets/like.svg';
+import LikeActiveIcon from '../assets/like-active.svg';
+
+import LyricsModal from '../components/LyricsModal';
+
 import { REPEAT_MODE } from '../utils/constants';
-import { shufflePlaylist } from '../utils/utils';
-
+import { shufflePlaylist, toHHMMSS } from '../utils/utils';
+import { getStreamingUrl } from '../api/manager';
+import { getStreamQuality } from '../utils/storage';
 
 let previousStreamUrl = ''
 let audio = new Audio();
@@ -33,23 +32,23 @@ audio.autoplay = false;
 const Controller = (props) => {
     const [state, setState] = useContext(GlobalState);
 
-    const song = (state.currentSong === null) ? { 'lyrics': null, 'art': '', name: 'No song playing', artist: 'Play one from your library' } : state.currentSong;
+    const song = (state.currentSong === null) ? { 'lyrics': null, 'art': AlbumArtBlank, name: 'No song playing', artist: 'Play one from your library' } : state.currentSong;
 
     const [currentTime, setCurrentTime] = useState(0);
-    const [isAudioPlaying, setAudioPlaying] = useState(false);
-    const [isAudioBuffering, setAudioBuffering] = useState(false);
+    const [duration, setDuration] = useState(0);
+    const [isPlaying, setPlaying] = useState(false);
+    const [isBuffering, setBuffering] = useState(false);
     const [showLyrics, setShowLyrics] = useState(false);
-    const [songLyrics, setSongLyrics] = useState(song?.lyrics);
 
     const pauseAudio = () => {
         audio.pause();
-        setAudioPlaying(false);
+        setPlaying(false);
     }
 
     const playAudio = () => {
         document.title = song?.name + ' - Hope Player';
         audio.play();
-        setAudioPlaying(true);
+        setPlaying(true);
     }
 
     const restartAudio = () => {
@@ -86,7 +85,6 @@ const Controller = (props) => {
                         nextSongIndex++;
                     } else {
                         nextSongIndex = 0;
-                        setState(state => ({ ...state, toast: 'Repeating from the beginning' }));
                     }
                     break;
                 case REPEAT_MODE.ONE:
@@ -125,16 +123,47 @@ const Controller = (props) => {
         setState(state => ({ ...state, queue: shuffledQueue }));
     }
 
+    const changeShuffle = () => {
+        state.shuffleOn ? unshuffleQueue() : shuffleQueue()
+        setState(state => ({ ...state, shuffleOn: !state.shuffleOn }))
+    }
+
+    const changeRepeat = () => {
+        let currentRepeat = state.repeatMode;
+        (currentRepeat < REPEAT_MODE.ONE) ? (currentRepeat++) : (currentRepeat = REPEAT_MODE.NONE);
+        setState(state => ({ ...state, repeatMode: currentRepeat }))
+    }
+
+    const handleSeekbarChange = (event) => {
+        const selectedDuration = event.target.value;
+        setCurrentTime(selectedDuration);
+        audio.currentTime = selectedDuration;
+    }
+
+    const getRepeatIcon = () => {
+        switch (state.repeatMode) {
+            case REPEAT_MODE.NONE:
+                return RepeatIcon;
+            case REPEAT_MODE.ALL:
+                return RepeatAllIcon;
+            case REPEAT_MODE.ONE:
+                return RepeatOneIcon
+            default:
+                return RepeatIcon;
+
+        }
+    }
+
     audio.ontimeupdate = () => {
         setCurrentTime(audio.currentTime);
     }
 
     audio.onpause = () => {
-        setAudioPlaying(false);
+        setPlaying(false);
     }
 
     audio.onplay = () => {
-        setAudioPlaying(true);
+        setPlaying(true);
     }
 
     audio.onended = () => {
@@ -144,17 +173,19 @@ const Controller = (props) => {
     }
 
     audio.onloadstart = () => {
-        setAudioBuffering(true);
+        setBuffering(true);
     }
 
     audio.oncanplay = () => {
-        setAudioBuffering(false);
+        setBuffering(false);
+        setDuration(audio.duration);
     }
 
     useEffect(() => {
         audio.currentTime = 0;
         pauseAudio();
         if (song?.id !== undefined) {
+            setBuffering(true);
             getStreamingUrl(song?.id, getStreamQuality()).then(response => {
                 if (response.status === 200) {
                     const streamingUrl = response.data.result;
@@ -173,227 +204,64 @@ const Controller = (props) => {
         // eslint-disable-next-line 
         [song?.id])
 
-    const albumArt = (song?.art !== '') ? song?.art : blankAlbumArt;
-
-    const handleChange = (event) => {
-        const selectedDuration = event.target.value;
-        setCurrentTime(selectedDuration);
-        audio.currentTime = selectedDuration;
-    }
-
     const showLyricsModal = () => {
-        setShowLyrics(true)
-        if (song?.lyrics !== null) {
-            if (song?.lyrics === '') {
-                setSongLyrics('Fetching song lyrics, please wait ...')
-                getSongLyrics(song?.id).then(response => {
-                    if (response.status === 200) {
-                        const lyrics = response.data.result
-                        if (lyrics != null) {
-                            setSongLyrics(lyrics)
-                        } else {
-                            setSongLyrics('Song lyrics unavailable.')
-                        }
-                        song.lyrics = lyrics
-                    } else {
-                        setSongLyrics('Song lyrics unavailable. Please try later.')
-                    }
-                })
-            } else {
-                setSongLyrics(song?.lyrics)
-            }
-        } else {
-            setShowLyrics(false)
-        }
+        setShowLyrics(song?.lyrics !== null)
     }
 
-    const changeShuffle = () => {
-        state.shuffleOn ? unshuffleQueue() : shuffleQueue()
-        setState(state => ({ ...state, shuffleOn: !state.shuffleOn }))
-    }
+    const albumArt = (song?.art !== '') ? song?.art : AlbumArtBlank;
 
-    const changeRepeat = () => {
-        let currentRepeat = state.repeatMode;
-        (currentRepeat < REPEAT_MODE.ONE) ? (currentRepeat++) : (currentRepeat = REPEAT_MODE.NONE);
-        setState(state => ({ ...state, repeatMode: currentRepeat }))
-    }
-
-    const getRepeatIcon = () => {
-        switch (state.repeatMode) {
-            case REPEAT_MODE.NONE:
-                return repeatIcon
-            case REPEAT_MODE.ALL:
-                return repeatAllIcon
-            case REPEAT_MODE.ONE:
-                return repeatOneIcon
-            default:
-                return repeatIcon
-        }
-    }
-
-    const getPlayStateDisplay = () => {
-        if (isAudioBuffering) {
-            return <Spinner animation="border" size="sm" variant="warning" />
-        } else {
-            if (props.mobile) {
-                return <img
-                    title={isAudioPlaying ? "Pause" : "Play"}
-                    className="play-button-mobile"
-                    src={isAudioPlaying ? pauseIcon : playIcon}
-                    width="14px"
-                    height="14px"
-                    alt=""
-                    onClick={() => {
-                        (isAudioPlaying) ? pauseAudio() : playAudio();
-                    }}
-                />
-            } else {
-                return <img
-                    title={isAudioPlaying ? "Pause" : "Play"}
-                    src={(isAudioPlaying) ? pauseIcon : playIcon}
-                    width="14px"
-                    height="14px"
-                    alt=""
-                    onClick={() => {
-                        (isAudioPlaying) ? pauseAudio() : playAudio();
-                    }}
-                />
-            }
-        }
-    }
-
-    const lyricsModal = <Modal centered show={showLyrics} onHide={() => setShowLyrics(false)}>
-        <Modal.Header closeButton>
-            <p className="m-0 p-0"><span className="mr-3"><img alt="" src={geniusLogo} width="36px" /></span>Lyrics powered by Genius</p>
-        </Modal.Header>
-        <Modal.Body className="lyric-body">{songLyrics}</Modal.Body>
-    </Modal>
-
-    const browserView = (
-        <div className="controller">
-            <img className="album-art" src={albumArt} alt="" />
-            <input
-                className="seekbar"
-                type="range"
-                min={0}
-                max={String(audio.duration)}
-                value={currentTime}
-                onChange={(event) => handleChange(event)} />
-            <Row className="audio-controls text-center m-0">
-                <Col>
-                    <img src={prevIcon}
-                        width="14px"
-                        height="14px"
-                        alt=""
-                        title="Previous Track"
-                        onClick={() => {
-                            if (audio.currentTime < 3) {
-                                pauseAudio();
-                                goToPreviousSong();
-                            }
-                            audio.currentTime = 0;
-                        }} />
+    return (
+        <div className="controls">
+            <Row className="m-0">
+                <Col className="p-0 m-0" md={2}>
+                    <div className="controller-song-details">
+                        <Image alt="" src={albumArt} roundedCircle className="controller-song-art" />
+                        <p className="controller-song-title" title={song.name}>{song.name}</p>
+                        <p className="controller-song-artist" title={song.artist}>{song.artist}</p>
+                    </div>
                 </Col>
-                <Col className="text-center">
-                    {getPlayStateDisplay()}
+                <Col className="p-0 m-0" md="auto">
+                    <div className="controller-controls-container">
+                        <img alt=""  src={PrevIcon} width="16px" height="16px" className="mr-3 controller-icon" onClick={() => goToPreviousSong()} />
+                        <div className="controller-play controller-icon" onClick={() => isPlaying ? pauseAudio() : playAudio()}>
+                            <img alt="" src={isPlaying ? PauseIcon : PlayIcon} width="16px" height="16px" className="controller-play-icon" />
+                        </div>
+                        <img alt=""  src={NextIcon} width="16px" height="16px" className="ml-3 controller-icon" onClick={() => goToNextSong(true)} />
+                    </div>
                 </Col>
-                <Col className="text-center">
-                    <img src={nextIcon}
-                        width="14px"
-                        height="14px"
-                        alt=""
-                        title="Next Track"
-                        onClick={() => {
-                            audio.currentTime = 0;
-                            pauseAudio();
-                            goToNextSong(true);
-                        }} />
+                <Col className="p-0 m-0">
+                    <div className="controller-seekbar-container">
+                        <p className="controller-time p-0 m-0 pr-3">{toHHMMSS(currentTime)}</p>
+                        <input
+                            className="seekbar"
+                            type="range"
+                            min={0}
+                            max={String(audio.duration)}
+                            value={currentTime}
+                            onChange={(event) => handleSeekbarChange(event)} />
+                        <p className="controller-time p-0 m-0 pl-3">{toHHMMSS(duration)}</p>
+                    </div>
+                </Col>
+                <Col className="p-0 m-0" md="auto">
+                    <div className="controller-options-container">
+                        <img alt="" src={state.shuffleOn ? ShuffleOnIcon : ShuffleIcon} width="16px" height="16px" className="mr-4 controller-icon" onClick={() => changeShuffle()} />
+                        <img alt="" src={getRepeatIcon()} width="16px" height="16px" className="mr-4 controller-icon" onClick={() => changeRepeat()} />
+                        <img alt="" src={song.liked ? LikeActiveIcon : LikeIcon} width="16px" height="16px" className="mr-5 controller-icon" />
+                        <a href={song.url} target="_blank" rel="noreferrer">
+                            <img alt="" src={YoutubeIcon} width="16px" height="16px" className="mr-3 controller-icon" />
+                        </a>
+                        <img alt="" src={LyricsIcon} width="16px" height="16px" className="controller-icon" onClick={() => showLyricsModal()} />
+                    </div>
                 </Col>
             </Row>
-            <Row className="audio-controls text-center m-0 pt-2">
-                <Col>
-                    <img src={getRepeatIcon()}
-                        width="16px"
-                        height="16px"
-                        alt=""
-                        title="Repeat"
-                        onClick={() => changeRepeat()} />
-                </Col>
-                <Col className="text-center">
-                    <img
-                        title="Shuffle"
-                        src={state.shuffleOn ? shuffleOnIcon : shuffleIcon}
-                        width="16px"
-                        height="16px"
-                        alt=""
-                        onClick={() => changeShuffle()}
-                    />
-                </Col>
-                <Col className="text-center">
-                    <img src={lyricsIcon}
-                        width="16px"
-                        height="16px"
-                        alt=""
-                        title="Lyrics"
-                        onClick={() => {
-                            showLyricsModal();
-                        }} />
-                </Col>
-            </Row>
-            <p className="song-name pl-3 pt-3 pr-3 pb-1 m-0">{song?.name}</p>
-            <p className="artist-name pl-3 pb-3 pr-3 m-0">{song?.artist}</p>
-            {lyricsModal}
+
+            <LyricsModal
+                song={song}
+                showLyrics={showLyrics}
+                setShowLyrics={setShowLyrics} />
+
         </div>
     );
-
-    const mobileView = (
-        <div className="controller-mobile">
-            <input
-                className="seekbar"
-                type="range"
-                min={0}
-                max={String(audio.duration)}
-                value={currentTime}
-                onChange={(event) => handleChange(event)} />
-
-            <div>
-                <img className="album-art-mobile" src={albumArt} alt="" />
-
-                <div className="song-details-mobile pt-2 pb-2 pl-3 m-0">
-                    <p className="song-name-mobile p-0 m-0">{song?.name}</p>
-                    <p className="artist-name-mobile p-0 m-0">{song?.artist}</p>
-                </div>
-
-                <img
-                    title={isAudioPlaying ? "Pause" : "Play"}
-                    className="play-button-mobile"
-                    src={isAudioPlaying ? pauseIcon : playIcon}
-                    width="14px"
-                    height="14px"
-                    alt=""
-                    onClick={() => {
-                        (isAudioPlaying) ? pauseAudio() : playAudio();
-                    }}
-                />
-                <img src={lyricsIcon}
-                    width="16px"
-                    height="16px"
-                    alt=""
-                    className="play-button-mobile"
-                    title="Lyrics"
-                    onClick={() => {
-                        showLyricsModal();
-                    }} />
-            </div>
-            {lyricsModal}
-        </div>
-    );
-
-    if (props.mobile) {
-        return mobileView;
-    } else {
-        return browserView;
-    }
-};
+}
 
 export default Controller;

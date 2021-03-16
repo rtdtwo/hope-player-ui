@@ -1,25 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { getArtists } from '../api/manager'
-import { isMobile } from '../utils/utils'
+import React, { useState, useEffect } from 'react';
+import { Col, Image, Row } from 'react-bootstrap';
+import { getArtists } from '../api/manager';
 import { serverUrl } from '../config.json'
 
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-import Spinner from 'react-bootstrap/Spinner';
 
-const Artists = (props) => {
-
+const Artists = () => {
     const [artists, setArtists] = useState([]);
-    const [artistsLoading, setArtistsLoading] = useState(false);
 
     const callGetArtists = () => {
-        setArtistsLoading(true);
         getArtists().then(response => {
             if (response.status === 200) {
                 const data = response.data.results;
                 setArtists(data);
-                setArtistsLoading(false);
             }
         });
     };
@@ -30,36 +22,23 @@ const Artists = (props) => {
         // eslint-disable-next-line
         []);
 
-    const artistList = artists.map(artist => {
-        return (
-            <Col xs={6} sm={6} md={4} lg={3} xl={2} key={artist.name}>
-                <Card bg="dark" className="mt-4">
-                    <Card.Img
-                        variant="top" src={serverUrl + '/artists/image?name=' + artist.name}
-                    />
-                    <Card.Body>
-                        <h6 className="text-light artist-card-name" title={artist.name}>{artist.name}</h6>
-                    </Card.Body>
-                </Card>
+    const getArtistList = () => {
+        return artists.map(artist => {
+            return <Col md={3} lg={2} key={artist.name} className="p-3 m-0 artist-list-item">
+                <Image roundedCircle src={serverUrl + '/artists/image?name=' + artist.name} className="artist-list-image" />
+                <p className="m-0 p-0 text-center artist-list-name">{artist.name}</p>
             </Col>
-        )
-    });
+        })
+    }
 
     return (
-        <div className="pl-4 pr-4 pb-4">
-            <Row className={isMobile ? "mb-5" : ""}>
-                {
-                    artistsLoading ?
-                        <Col xs={12} className="text-center mt-3">
-                            <Spinner animation="border" variant="warning" />
-                            <h5 className="page-headline mt-3">Loading artists</h5>
-                        </Col>
-                        : artistList
-                }
-                
+        <div className="page-root artists-container">
+            <h3 className="page-headline mt-5 ml-5 mr-5 mb-0 bottom-border">Artists</h3>
+            <Row className="m-0 p-4 artists-list-container">
+                {getArtistList()}
             </Row>
         </div>
-    )
+    );
 }
 
 export default Artists;

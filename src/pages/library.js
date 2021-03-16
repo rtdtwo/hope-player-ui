@@ -1,68 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import SongList from '../components/songlist';
+import React, { useState, useEffect } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { getLibrary } from '../api/manager';
-import { addToLibrary, editSong } from '../api/manager'
-import config from '../config.json'
+import SongList from '../components/SongList';
+import { editAccess } from '../config.json';
+import AddIcon from '../assets/add.svg';
+import AddSongModal from '../components/AddSong';
+import EditSongModal from '../components/EditSong';
 
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
-
-const Library = (props) => {
-    // eslint-disable-next-line
-    const blankSong = {
-        id: "",
-        name: "",
-        artist: "",
-        url: "",
-        tags: "",
-        lyrics: ""
-    };
-
-    const [libraryLoading, setLibraryLoading] = useState(false)
-    const [librarySongs, setLibrarySongs] = useState([])
+const Library = () => {
+    const [library, setLibrary] = useState([]);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [addOrEditSongDetails, setAddOrEditSongDetails] = useState(blankSong);
-
-    const callAddSong = () => {
-        if (addOrEditSongDetails.name === "" || addOrEditSongDetails.artist === "" || addOrEditSongDetails.url === "") {
-            alert("Song name, artist and YouTube link are required");
-        } else {
-            addToLibrary(addOrEditSongDetails).then(response => {
-                if (response.status === 201) {
-                    setShowAddModal(false);
-                    getSongs();
-                    alert('Added');
-                }
-            });
-        }
-    }
-
-    const callEditSong = () => {
-        if (addOrEditSongDetails.name === "" || addOrEditSongDetails.artist === "") {
-            alert("Song name and artist are required")
-        } else {
-            editSong(addOrEditSongDetails).then(response => {
-                if (response.status === 200) {
-                    setShowEditModal(false);
-                    getSongs();
-                    alert("Song Edited");
-                }
-            });
-        }
-    }
 
     const getSongs = () => {
-        setLibraryLoading(true);
         getLibrary().then(response => {
             if (response.status === 200) {
                 const data = response.data.results;
-                setLibrarySongs(data);
-                setLibraryLoading(false);
+                setLibrary(data);
             }
         });
     };
@@ -73,117 +27,33 @@ const Library = (props) => {
         // eslint-disable-next-line
         []);
 
-
-    const addSongModal = <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
-        <Modal.Header closeButton>
-            <Modal.Title>Add Song</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <Form.Group>
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="eg. Hey Jude" onChange={(e) => {
-                    setAddOrEditSongDetails({ ...addOrEditSongDetails, name: e.target.value })
-                }} />
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Artist</Form.Label>
-                <Form.Control type="text" placeholder="eg. The Beatles" onChange={(e) => {
-                    setAddOrEditSongDetails({ ...addOrEditSongDetails, artist: e.target.value })
-                }} />
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>YouTube Link</Form.Label>
-                <Form.Control type="text" placeholder="Full link required" onChange={(e) => {
-                    setAddOrEditSongDetails({ ...addOrEditSongDetails, url: e.target.value })
-                }} />
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Tags</Form.Label>
-                <Form.Control type="text" placeholder="Add comma separated tags" onChange={(e) => {
-                    setAddOrEditSongDetails({ ...addOrEditSongDetails, tags: e.target.value })
-                }} />
-            </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-            <Button variant="warning" onClick={() => {
-                callAddSong()
-            }}>Add</Button>
-        </Modal.Footer>
-    </Modal>
-
-    const editSongModal = <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-        <Modal.Header closeButton>
-            <Modal.Title>Edit Song</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <Form.Group>
-                <Form.Label>Name</Form.Label>
-                <Form.Control defaultValue={addOrEditSongDetails.name} type="text" placeholder="eg. Hey Jude" onChange={(e) => {
-                    setAddOrEditSongDetails({ ...addOrEditSongDetails, name: e.target.value })
-                }} />
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Artist</Form.Label>
-                <Form.Control defaultValue={addOrEditSongDetails.artist} type="text" placeholder="eg. The Beatles" onChange={(e) => {
-                    setAddOrEditSongDetails({ ...addOrEditSongDetails, artist: e.target.value })
-                }} />
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>YouTube Link</Form.Label>
-                <Form.Control defaultValue={addOrEditSongDetails.url} type="text" disabled />
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Tags</Form.Label>
-                <Form.Control defaultValue={addOrEditSongDetails.tags} type="text" placeholder="Add comma separated tags" onChange={(e) => {
-                    setAddOrEditSongDetails({ ...addOrEditSongDetails, tags: e.target.value })
-                }} />
-            </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-            <Button variant="warning" onClick={() => {
-                callEditSong()
-            }}>Update</Button>
-        </Modal.Footer>
-    </Modal>
-
-    const displayEditModal = song => {
-        setAddOrEditSongDetails({ ...song, tags: song.tags.join() });
-        setShowEditModal(true);
-    }
-
-    const displayAddModal = () => {
-        setAddOrEditSongDetails(blankSong);
-        setShowAddModal(true);
-    }
-
     return (
-        <div>
-            <Row className="m-0">
-                {config.editAccess ?
-                    <Col sm="auto">
-                        <Button variant="outline-warning" onClick={() => {
-                            displayAddModal()
-                        }}>Add</Button>
+        <div className="page-root library-container">
+            <AddSongModal
+                showAddModal={showAddModal}
+                setShowAddModal={setShowAddModal}
+                getSongs={getSongs} />
+
+            <EditSongModal
+                showEditModal={showEditModal}
+                setShowEditModal={setShowEditModal}
+                getSongs={getSongs} />
+
+            <Row className="mt-5 ml-5 mr-5 mb-0 bottom-border">
+                <Col className="m-0 p-0 align-self-center">
+                    <h3 className="page-headline">Your Library</h3>
+                </Col>
+                {editAccess ?
+                    <Col className="m-0 p-0 align-self-center" md="auto">
+                        <img alt="" className="pointer-cursor mr-2" src={AddIcon} width="20px" onClick={() => setShowAddModal(true)} />
                     </Col>
                     : ""}
-                <Col sm={12} className="m-0 p-0">
-                    {
-                        libraryLoading ?
-                            <div className="text-center mt-3">
-                                <Spinner animation="border" variant="warning" />
-                                <h5 className="page-headline mt-3">Loading playlist</h5>
-                            </div>
-                            :
-                            <SongList showEditModal={displayEditModal} playlist={librarySongs} />
-                    }
-
-                </Col>
             </Row>
-            {addSongModal}
-            {editSongModal}
+            <div className="song-list-container pl-4">
+                <SongList playlist={library} />
+            </div>
         </div>
-    )
-
+    );
 }
 
 export default Library;
