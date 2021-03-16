@@ -5,6 +5,7 @@ import GlobalState from '../contexts/GlobalState';
 import { shufflePlaylist } from '../utils/utils';
 
 import EditIcon from '../assets/pencil.svg'
+import { editAccess } from '../utils/EnvProvider';
 
 
 const SongList = (props) => {
@@ -37,9 +38,14 @@ const SongList = (props) => {
                     })}
                 </div>
             </Col>
-            <Col md="auto" className="p-0 m-0 align-self-center">
-                <Image src={EditIcon} width="16px" alt="" />
-            </Col>
+            {
+                editAccess() ?
+                    <Col md="auto" className="p-0 m-0 ml-3 align-self-center">
+                        <Image src={EditIcon} width="16px" alt="" />
+                    </Col>
+                    :
+                    ''
+            }
         </Row>;
     });
 
