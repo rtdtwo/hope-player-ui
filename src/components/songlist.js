@@ -4,6 +4,8 @@ import Image from 'react-bootstrap/Image';
 import GlobalState from '../contexts/GlobalState';
 import { shufflePlaylist } from '../utils/utils';
 
+import EditIcon from '../assets/pencil.svg'
+
 
 const SongList = (props) => {
     const [state, setState] = useContext(GlobalState);
@@ -34,6 +36,9 @@ const SongList = (props) => {
                         return <Badge variant="dark" className="mr-2" key={tag}>{tag}</Badge>
                     })}
                 </div>
+            </Col>
+            <Col md="auto" className="p-0 m-0 align-self-center">
+                <Image src={EditIcon} width="16px" alt="" />
             </Col>
         </Row>;
     });

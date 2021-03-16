@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { getLibrary } from '../api/manager';
 import SongList from '../components/SongList';
-import { editAccess } from '../config.json';
 import AddIcon from '../assets/add.svg';
 import AddSongModal from '../components/AddSong';
-import EditSongModal from '../components/EditSong';
+// import EditSongModal from '../components/EditSong';
+import { editAccess } from '../utils/EnvProvider';
 
 const Library = () => {
     const [library, setLibrary] = useState([]);
@@ -34,16 +34,16 @@ const Library = () => {
                 setShowAddModal={setShowAddModal}
                 getSongs={getSongs} />
 
-            <EditSongModal
+            {/* <EditSongModal
                 showEditModal={showEditModal}
                 setShowEditModal={setShowEditModal}
-                getSongs={getSongs} />
+                getSongs={getSongs} /> */}
 
             <Row className="mt-5 ml-5 mr-5 mb-0 bottom-border">
                 <Col className="m-0 p-0 align-self-center">
                     <h3 className="page-headline">Your Library</h3>
                 </Col>
-                {editAccess ?
+                {editAccess() ?
                     <Col className="m-0 p-0 align-self-center" md="auto">
                         <img alt="" className="pointer-cursor mr-2" src={AddIcon} width="20px" onClick={() => setShowAddModal(true)} />
                     </Col>
