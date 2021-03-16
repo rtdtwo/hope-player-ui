@@ -18,7 +18,7 @@ import YoutubeIcon from '../assets/youtube.svg';
 import LikeIcon from '../assets/like.svg';
 import LikeActiveIcon from '../assets/like-active.svg';
 
-import LyricsModal from '../components/LyricsModal';
+import LyricsModal from './LyricsModal';
 
 import { REPEAT_MODE } from '../utils/constants';
 import { shufflePlaylist, toHHMMSS } from '../utils/utils';
