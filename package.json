@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "startDebug": "SET REACT_APP_HOPE_PLAYER_EDIT_ACCESS=1&&SET REACT_APP_HOPE_PLAYER_SERVER_URL=https://api.hope.rishabh.blog&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
