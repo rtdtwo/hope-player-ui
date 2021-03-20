@@ -9,7 +9,7 @@ const EditSong = (props) => {
 
     const callGetSongLyrics = () => {
         setLyrics(props.song.lyrics)
-        if (lyrics === '') {
+        if (props.song.lyrics === '') {
             setLyrics('Fetching song lyrics, please wait ...');
             getSongLyrics(props.song.id).then(response => {
                 if (response.status === 200) {
