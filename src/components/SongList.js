@@ -40,7 +40,7 @@ const SongList = (props) => {
             </Col>
             {
                 editAccess() ?
-                    <Col md="auto" className="p-0 m-0 ml-3 align-self-center">
+                    <Col md="auto" className="p-0 m-0 ml-3 mr-3 align-self-center">
                         <Image src={EditIcon} width="16px" alt="" />
                     </Col>
                     :
