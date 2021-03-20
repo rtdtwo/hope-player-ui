@@ -4,7 +4,7 @@ import GeniusLogo from '../assets/genius-logo.jpg';
 import { getSongLyrics } from '../api/manager';
 
 
-const EditSong = (props) => {
+const LyricsModal = (props) => {
     const [lyrics, setLyrics] = useState(null);
 
     const callGetSongLyrics = () => {
@@ -41,4 +41,4 @@ const EditSong = (props) => {
     );
 }
 
-export default EditSong;
+export default LyricsModal;

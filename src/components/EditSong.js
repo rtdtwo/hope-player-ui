@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { editSong } from '../api/manager';
 
 const EditSong = (props) => {
-    const [addOrEditSongDetails, setAddOrEditSongDetails] = useState(props.song);
+
+    const [addOrEditSongDetails, setAddOrEditSongDetails] = useState(props.song)
 
     const callEditSong = () => {
         if (addOrEditSongDetails.name === "" || addOrEditSongDetails.artist === "") {
@@ -12,7 +13,7 @@ const EditSong = (props) => {
             editSong(addOrEditSongDetails).then(response => {
                 if (response.status === 200) {
                     props.setShowEditModal(false);
-                    props.getSongs();
+                    props.callback(addOrEditSongDetails);
                 }
             });
         }
@@ -26,23 +27,23 @@ const EditSong = (props) => {
             <Modal.Body>
                 <Form.Group>
                     <Form.Label>Name</Form.Label>
-                    <Form.Control defaultValue={addOrEditSongDetails.name} type="text" placeholder="eg. Hey Jude" onChange={(e) => {
+                    <Form.Control defaultValue={props.song?.name} type="text" placeholder="eg. Hey Jude" onChange={(e) => {
                         setAddOrEditSongDetails({ ...addOrEditSongDetails, name: e.target.value })
                     }} />
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Artist</Form.Label>
-                    <Form.Control defaultValue={addOrEditSongDetails.artist} type="text" placeholder="eg. The Beatles" onChange={(e) => {
+                    <Form.Control defaultValue={props.song?.artist} type="text" placeholder="eg. The Beatles" onChange={(e) => {
                         setAddOrEditSongDetails({ ...addOrEditSongDetails, artist: e.target.value })
                     }} />
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>YouTube Link</Form.Label>
-                    <Form.Control defaultValue={addOrEditSongDetails.url} type="text" disabled />
+                    <Form.Control defaultValue={props.song?.url} type="text" disabled />
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Tags</Form.Label>
-                    <Form.Control defaultValue={addOrEditSongDetails.tags} type="text" placeholder="Add comma separated tags" onChange={(e) => {
+                    <Form.Control defaultValue={props.song?.tags} type="text" placeholder="Add comma separated tags" onChange={(e) => {
                         setAddOrEditSongDetails({ ...addOrEditSongDetails, tags: e.target.value })
                     }} />
                 </Form.Group>
